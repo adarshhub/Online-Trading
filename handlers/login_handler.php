@@ -10,8 +10,8 @@ if(isset($_POST['login_button'])){
         $row = mysqli_fetch_array($query);
         $username = $row['username'];
 
-        $_SESSION['usrname'] = $username;
-        header('Location: index.php');
+        $_SESSION['username'] = $username;
+        header("Location: index.php");
     } else {
         echo "email or password is incorrect";
     }
