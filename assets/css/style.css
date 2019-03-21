@@ -30,3 +30,100 @@ nav {
 #logo:hover{
     text-decoration: none;
 }
+
+.wrapper{
+    max-width: 1200px;
+   
+    margin-top: 18px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 18px;
+    height: 800px;
+}
+
+#main-container div{
+    float: left;
+}
+
+#asset-list-container{
+    
+    width: 60%;
+    padding: 18px;
+    height: 700px;
+    overflow: scroll;
+    border-right: 1px solid #333;
+}
+
+#asset-details-container {
+    width: 40%;
+    padding: 18px;
+    height: 700px;
+}
+
+.vertical-center{
+    top: 50%;
+    transform: translateY(-50%);
+    position: relative;
+}
+
+.normal-title{
+    font-size: 140%;
+    font-family: 'Bellota-BoldItalic', san-serif;
+    
+}
+
+.title-box {
+    width: 100%;
+    height: 50px;
+}
+
+.name-title{
+    float: left;
+    width: 30%;
+    text-align: left;
+    padding-left: 18px;
+}
+
+.last-trade-price-title{
+    float: right;
+    width: 30%;
+    text-align: right;
+}
+
+.current-bid-title{
+    float: right;
+    width: 30%;
+    text-align: right;
+}
+
+.asset {
+    width: 100%;
+    background-color: rgba(196, 222, 238, 0.712);
+    height: 60px;
+    border: 1px 0.95 #111;
+    border-radius: 5px;
+    margin:4px;
+    cursor: pointer;
+}
+
+.asset-name{
+    float: left;
+    width: 30%;
+    text-align: left;
+    padding-left: 18px;
+}
+
+.asset-last-trade-price{
+    float: right;
+    width: 30%;
+    text-align: right;
+    padding-right: 9px;
+}
+
+.asset-current-bid{
+    float: right;
+    width: 30%;
+    text-align: right;
+    padding-right: 9px;
+}
+

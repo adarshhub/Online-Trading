@@ -1,7 +1,8 @@
 <?php
 require("config/config.php");
 if (isset($_SESSION['username'])){
-    $username = $_SESSION['username'];
+    $userLoggedIn = $_SESSION['username'];
+    echo "<script>userLoggedIn = '$userLoggedIn';</script>";
 } else {
     header("Location: register.php");
 }
@@ -25,10 +26,11 @@ if (isset($_SESSION['username'])){
         <nav>
             <a href="#" id="logo">On-Trade</a>
             <a href="#" onclick="logout()">Logout</a>
-            <a href="#">Account</a>
-            <a href="#">Market</a>
+            <a href="#" onclick="openPage('account.php')">Account</a>
+            <a href="#" onclick="openPage('index.php')">Market</a>
             <a href="#">Home</a>
         </nav>
     </div>
 
+    <div id="main-container"class="wrapper">
 
