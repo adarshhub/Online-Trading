@@ -28,7 +28,6 @@ if (isset($_SESSION['username'])){
             <a href="#" onclick="logout()">Logout</a>
             <a href="#" onclick="openPage('account.php')">Account</a>
             <a href="#" onclick="openPage('index.php')">Market</a>
-            <a href="#">Home</a>
         </nav>
     </div>
 

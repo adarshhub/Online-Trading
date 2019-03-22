@@ -32,16 +32,15 @@ nav {
 }
 
 .wrapper{
-    max-width: 1200px;
-   
+    max-width: 1300px;
+    height: auto;
     margin-top: 18px;
     margin-left: auto;
     margin-right: auto;
     padding: 0 18px;
-    height: 800px;
 }
 
-#main-container div{
+#main-container > div{
     float: left;
 }
 
@@ -49,15 +48,20 @@ nav {
     
     width: 60%;
     padding: 18px;
-    height: 700px;
-    overflow: scroll;
+    height: 580px;
     border-right: 1px solid #333;
+}
+
+#asset-list{
+    overflow: scroll;
+    position: relative;
+    height: 90%;
 }
 
 #asset-details-container {
     width: 40%;
     padding: 18px;
-    height: 700px;
+    height: 500px;
 }
 
 .vertical-center{
@@ -97,7 +101,7 @@ nav {
 }
 
 .asset {
-    width: 100%;
+    width: 99%;
     background-color: rgba(196, 222, 238, 0.712);
     height: 60px;
     border: 1px 0.95 #111;
@@ -126,4 +130,57 @@ nav {
     text-align: right;
     padding-right: 9px;
 }
+
+#order-container{
+    padding: 18px;
+    top: 0%;
+    position: relative;
+    border-bottom: 1px solid #333;
+}
+
+#trade-container > div{
+    float: left;
+    padding: 9px;
+}
+
+#trade-container{
+    top: 50%;
+    position: relative;
+    display: flex;
+}
+
+#buy-box > input, #sell-box input{
+    margin-bottom: 9px;
+}
+
+#buy-box > button, #sell-box button{
+    float: right;
+}
+
+#sell-box{
+    border-right: 1px solid #333;
+}
+
+#profile-details-container .form-group{
+    display: flex;
+}
+
+#profile-details-container label{
+    white-space: nowrap;
+    margin-right: 15px;
+}
+
+#edit-profile-button{
+    position: absolute;
+    top: 80px;
+    right: 15px;
+}
+
+#notice-box{
+    position: fixed;
+    bottom: 0px;
+    left: 40%;
+    
+}
+
 

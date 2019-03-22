@@ -19,7 +19,7 @@ function init_market(){
     request.open('GET','https://koinex.in/api/ticker');
 
     request.onload =  function(){
-        var assetListContainer = document.getElementById('asset-list-container');
+        var assetListContainer = document.getElementById('asset-list');
         var data = JSON.parse(request.responseText);
         var coinData = data.stats.inr;
 
@@ -29,7 +29,6 @@ function init_market(){
             assetListContainer.insertAdjacentHTML('beforeend', htmlString);
         }
         
-        
     }
 
     request.onerror = function(){
@@ -38,4 +37,68 @@ function init_market(){
 
     request.send(); 
 
+    request.addEventListener('loadend',assetListener);
+
 }
+
+function assetListener(){ 
+
+    var assets =  document.querySelectorAll('.asset');
+
+    assets.forEach(function(asset){
+    
+        asset.addEventListener('click',function(ele){
+        console.log(ele.target.childNodes[0].textContent);
+        });
+
+    });
+}
+
+function editProfile(){
+    var button = document.querySelector('#edit-profile-button');
+    var inputs = document.querySelectorAll('#profile-details-container input');
+
+    if(button.textContent == "Edit Profile"){
+        
+        button.textContent = "Save";
+
+        inputs.forEach(function(input){
+            input.disabled = false;
+        });
+
+    } else {
+
+        var new_firstname, new_lastname, new_email;
+    
+        inputs.forEach(function(input){
+            if(input.id == "profile-firstname"){
+                new_firstname = input.value;
+            }
+            if(input.id == "profile-lastname"){
+                new_lastname = input.value;
+            }
+            if(input.id == "profile-email"){
+                new_email = input.value;
+            }
+        });
+
+        $.post("handlers/ajax/edit_profile.php",{ firstname: new_firstname, lastname: new_lastname, email: new_email }).done(function(error){
+            var box = document.getElementById('notice-box');
+
+            if (error != "") {
+				box.innerHTML = error;
+				return;
+            }
+            
+            box.innerHTML = "<div class='alert alert-success alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>Success!</strong> Updated profile details</div>";
+			button.textContent = "Edit Profile";
+
+            inputs.forEach(function(input){
+                input.disabled = true;
+            });
+        });
+    }
+    
+}
+
+ 
