@@ -7,6 +7,7 @@ function logout(){
 }
 
 function openPage(url){
+
     var encodedUrl = encodeURI(url);
     encodedUrl = encodedUrl.substring(encodedUrl.lastIndexOf('/')+1, encodedUrl.length);
     $("#main-container").load(encodedUrl);
@@ -48,10 +49,24 @@ function assetListener(){
     assets.forEach(function(asset){
     
         asset.addEventListener('click',function(ele){
-        console.log(ele.target.childNodes[0].textContent);
+            var asset = ele.srcElement.childNodes[0].textContent;
+        
+            if(asset == ""){
+                asset = ele.target.parentNode.childNodes[0].textContent;
+            }
+            loadAsset(asset);
         });
 
     });
+}
+
+function loadAsset(asset){
+    var encodedURL = encodeURI('index.php?asset='+asset);
+    openPage(encodedURL);
+}
+
+function initAsset(asset){
+    document.getElementById('asset-name').innerHTML = asset;
 }
 
 function editProfile(){

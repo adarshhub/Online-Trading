@@ -132,21 +132,25 @@ nav {
 }
 
 #order-container{
-    padding: 18px;
-    top: 0%;
+    padding: 0 18px;
+    top: 0;
+    height: 70%;
+    width: 100%;
     position: relative;
     border-bottom: 1px solid #333;
 }
 
-#trade-container > div{
+#trade-container > div, #order-container > div {
     float: left;
     padding: 9px;
 }
 
-#trade-container{
+#trade-container {
     top: 50%;
-    position: relative;
     display: flex;
+    width: 100%;
+    padding: 0px 18px;
+    border-bottom: 1px solid #333;
 }
 
 #buy-box > input, #sell-box input{
@@ -157,7 +161,11 @@ nav {
     float: right;
 }
 
-#sell-box{
+#sell-orders-box, #buy-orders-box{
+    width: 50%;
+}
+
+#sell-box, #sell-orders-box{
     border-right: 1px solid #333;
 }
 

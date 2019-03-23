@@ -1,5 +1,19 @@
 <?php  include "includes/includedFiles.php"; 
     echo "<script>init_market()</script>";
+
+    $url = $_SERVER['REQUEST_URI'];
+
+    if($url == "index.php" || strpos($url, '?') == FALSE){
+        $url = $url.'?asset=ETH';
+        echo "<script>openPage('$url')</script>";
+    }
+
+    if(isset($_GET['asset'])){
+
+        $asset = $_GET['asset'];
+       echo "<script>initAsset('$asset')</script>";
+
+    }
 ?>
 
     <div id="asset-list-container">
@@ -14,7 +28,13 @@
     
     <div id="asset-details-container">
         <div id="order-container">
-            Order Container
+            <h2><span id="asset-name" class="label label-default">Asset Name</span></h2>
+            <div id="sell-orders-box">
+                sell orders
+            </div>
+            <div id="buy-orders-box">
+                buy orders
+            </div>
         </div>
         <div id="trade-container">
             <div id="sell-box">
