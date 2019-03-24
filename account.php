@@ -26,6 +26,7 @@ $email = $row['email'];
                 <input required type="email" class="form-control col-sm-10" name="profile-email" id="profile-email" value="<?php echo $email; ?>" disabled>
             </div>
             <button type="button" class="btn btn-warning" id="edit-profile-button" onclick="editProfile()">Edit Profile</button>
+            <button type="button" class="btn btn-danger" id="change-password-button" data-toggle="modal" data-target="#passwordChangeModal">Change Password</button>
         </form>
     </div>
     <div id="asset-holding-container">

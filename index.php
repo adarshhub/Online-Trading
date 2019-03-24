@@ -28,12 +28,64 @@
     
     <div id="asset-details-container">
         <div id="order-container">
-            <h2><span id="asset-name" class="label label-default">Asset Name</span></h2>
+            <h2><span id="asset-name" class="label label-primary">Asset Name</span></h2>
             <div id="sell-orders-box">
-                sell orders
+                Sell Order
+                <table id="sell-order-table" class="table">
+                    <thead>
+                        <tr>
+                            <th>Volume</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="danger">
+                            <td>10.00</td>
+                            <td>50.00</td>
+                        </tr>
+                        <tr class="danger">
+                            <td>11.00</td>
+                            <td>49.00</td>
+                        </tr>
+                        <tr class="danger">
+                            <td>10.00</td>
+                            <td>50.00</td>
+                        </tr>
+                        <tr class="danger">
+                            <td>11.00</td>
+                            <td>49.00</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div id="buy-orders-box">
-                buy orders
+                Buy orders
+                <table id="buy-order-table" class="table">
+                    <thead>
+                        <tr>
+                            <th>Volume</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="danger">
+                            <td>10.00</td>
+                            <td>50.00</td>
+                        </tr>
+                        <tr class="danger">
+                            <td>11.00</td>
+                            <td>49.00</td>
+                        </tr>
+                        <tr class="danger">
+                            <td>10.00</td>
+                            <td>50.00</td>
+                        </tr>
+                        <tr class="danger">
+                            <td>11.00</td>
+                            <td>49.00</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <div id="trade-container">

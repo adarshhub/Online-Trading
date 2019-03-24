@@ -116,4 +116,29 @@ function editProfile(){
     
 }
 
- 
+function changePassword(){
+    var currentPassword = document.getElementById('current-password').value;
+    var newPassword = document.getElementById('new-password').value;
+    var confirmPassword = document.getElementById('confirm-password').value;
+
+    var notice_box = document.getElementById('change-password-notice');
+
+    if( newPassword == confirmPassword){
+
+        $.post("handlers/ajax/change_password.php",{oldPassword: currentPassword, newPassword: confirmPassword}).done(function(error){
+            if(error != ""){
+                notice_box.innerHTML = error;
+                return;
+            }
+
+            notice_box.innerHTML = "<div class='alert alert-success alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>Success!</strong> Password Changed</div>";
+
+        });
+
+    } else {
+        notice_box.innerHTML = "<div class='alert alert-warning alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>OOPs!</strong> New passwords do not match!</div>";
+    }
+
+    
+
+}
