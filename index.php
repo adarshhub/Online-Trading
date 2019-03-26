@@ -90,14 +90,14 @@
         </div>
         <div id="trade-container">
             <div id="sell-box">
-                <input type="number" class="form-control" placeholder="Amount" >
-                <input type="number" class="form-control" placeholder="Price" >
-                <button class="btn btn-primary">Sell</button>
+                <input type="number" class="form-control" placeholder="Volume" id="sell-volume">
+                <input type="number" class="form-control" placeholder="Rate" id="sell-rate">
+                <button class="btn btn-primary" id="sell-button" onclick="place_order('sell')">Sell</button>
             </div>
             <div id="buy-box">
-                <input type="number" class="form-control" placeholder="Amount" >
-                <input type="number" class="form-control" placeholder="Price" >
-                <button class="btn btn-primary">Buy</button>
+                <input type="number" class="form-control" placeholder="Volume" id="buy-volume">
+                <input type="number" class="form-control" placeholder="Rate" id="buy-rate">
+                <button class="btn btn-primary" id="buy-button" onclick="place_order('buy')">Buy</button>
             </div>
             
         </div>

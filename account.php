@@ -1,5 +1,5 @@
-<?php  include "includes/includedFiles.php";
-       include "config/config.php";
+<?php  include("includes/includedFiles.php");
+       include("config/config.php");
 
 $username = $_SESSION['username'];
 $query = mysqli_query($con,"SELECT * FROM users WHERE username='$username'");
@@ -10,7 +10,7 @@ $lastname = ucfirst($row['lastname']);
 $email = $row['email'];
 ?>
 
-<div class="wrapper">
+<div>
     <div id="profile-details-container">
         <form class="form-horizontal">
             <div class="form-group">
@@ -29,6 +29,27 @@ $email = $row['email'];
             <button type="button" class="btn btn-danger" id="change-password-button" data-toggle="modal" data-target="#passwordChangeModal">Change Password</button>
         </form>
     </div>
-    <div id="asset-holding-container">
+    <div id="asset-holding-container" >
+        <h2>My Orders</h2>
+        <ul id="my-orders" class="list-group">
+            <?php 
+            $myorder_query = mysqli_query($con,"SELECT asset, num_id FROM orders WHERE placed_by='$username'");
+            while($row = mysqli_fetch_array($myorder_query)){
+
+                $asset = $row['asset'];
+                $num_id = $row['num_id'];
+
+                $myasset_query= mysqli_query($con,"SELECT * from $asset WHERE placed_by='$username' AND id='$num_id'");
+                $order_details = mysqli_fetch_array($myasset_query);
+
+                $type = $order_details['order_type'];
+                $volume = $order_details['volume'];
+                $rate = $order_details['rate'];
+
+                echo "<script>init_order_list('$asset', '$volume', '$rate', '$type')</script>";
+                
+            }
+            ?>
+        </ul>
     </div>
 </div>

@@ -9,7 +9,7 @@ if(isset($_POST['lastname']) && isset($_POST['firstname']) && isset($_POST['emai
 
     $email = filter_var($email, FILTER_VALIDATE_EMAIL);
     $email_check = mysqli_query($con,"SELECT email FROM users WHERE email='$email'");
-    if(mysqli_num_rows($email_check)){
+    if(mysqli_num_rows($email_check) && $email != mysqli_fetch_array($email_check)['email']){
         
         echo "<div class='alert alert-danger alert-dismissible'>
         <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>

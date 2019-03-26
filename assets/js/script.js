@@ -1,4 +1,7 @@
-var userLoggedIn;
+var userLoggedIn,
+currentAsset,
+currentAsset_Price,
+notice_box = document.getElementById('notice-box');
 
 function logout(){
     $.post("handlers/ajax/logout.php", function(){
@@ -33,7 +36,7 @@ function init_market(){
     }
 
     request.onerror = function(){
-        console.log("Error in connection");
+        notice_box.innerHTML = "<div class='alert alert-warning alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>OOps!</strong> Error in Connection</div>";
     }
 
     request.send(); 
@@ -49,10 +52,11 @@ function assetListener(){
     assets.forEach(function(asset){
     
         asset.addEventListener('click',function(ele){
-            var asset = ele.srcElement.childNodes[0].textContent;
-        
-            if(asset == ""){
+            var asset;
+            if(ele.target.parentElement.className == 'asset'){
                 asset = ele.target.parentNode.childNodes[0].textContent;
+            } else if(ele.target.className == 'asset'){
+                asset = ele.srcElement.childNodes[0].textContent;
             }
             loadAsset(asset);
         });
@@ -66,6 +70,7 @@ function loadAsset(asset){
 }
 
 function initAsset(asset){
+    currentAsset = asset;
     document.getElementById('asset-name').innerHTML = asset;
 }
 
@@ -98,14 +103,13 @@ function editProfile(){
         });
 
         $.post("handlers/ajax/edit_profile.php",{ firstname: new_firstname, lastname: new_lastname, email: new_email }).done(function(error){
-            var box = document.getElementById('notice-box');
 
             if (error != "") {
 				box.innerHTML = error;
 				return;
             }
             
-            box.innerHTML = "<div class='alert alert-success alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>Success!</strong> Updated profile details</div>";
+            document.getElementById('notice-box').innerHTML = "<div class='alert alert-success alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>Success!</strong> Updated profile details</div>";
 			button.textContent = "Edit Profile";
 
             inputs.forEach(function(input){
@@ -138,7 +142,87 @@ function changePassword(){
     } else {
         notice_box.innerHTML = "<div class='alert alert-warning alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>OOPs!</strong> New passwords do not match!</div>";
     }
+}
 
+function place_order(type){
+    var volume = parseInt(document.getElementById(type+'-volume').value);
+    var rate = parseInt(document.getElementById(type+'-rate').value);
+
+    var request = new XMLHttpRequest();
     
+    request.open('GET','https://koinex.in/api/ticker' );
+    
+    request.onreadystatechange = function(){
+        if(request.readyState == 4 && request.status == 200){
+            var data = JSON.parse(request.responseText);
+            var currentAsset_Price = data.prices.inr[currentAsset];
+            var diff = Math.abs(currentAsset_Price - rate);
+            var temp_notice_box = document.getElementById('notice-box');
+            if(diff > (currentAsset_Price*0.1)){
+                temp_notice_box.innerHTML = "<div class='alert alert-warning alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>OOPs!</strong> Rate cannot be greater or less than 10%</div>"
+            } else {
+                $.post("handlers/ajax/place_order.php",{type: type,asset: currentAsset, volume: volume, rate: rate}).done(function(error){
+                    if(error){
+                        temp_notice_box.innerHTML = error;
+                    } else {
+                        temp_notice_box.innerHTML = "<div class='alert alert-success alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>Success!</strong> Order Placed</div>";
+                    }
+                });
+            }
+        }
+    }
+
+    /*
+    request.onload = function(volume) {
+        var data = JSON.parse(request.responseText);
+        var currentAsset_Price = data.prices.inr[currentAsset];
+        var diff = Math.abs(currentAsset_Price - rate);
+        if(diff > (currentAsset_Price*0.1)){
+            document.getElementById('notice-box').innerHTML = "<div class='alert alert-warning alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>OOPs!</strong> Rate cannot be greater or less than 10%</div>"
+        } else {
+            temp(volume);
+            //$.post("handlers/ajax/sell_order.php",{asset: currentAsset})
+        }
+    }
+*/
+    request.send(); 
+    
+}
+
+function init_order_list(name, volume, rate, type){
+    var htmlString = '<li class="asset order-list-item"><span class="asset-name vertical-center">%Name%</span><span class="asset-name vertical-center">%Type%</span><span class="asset-name vertical-center">%Volume%</span><span class="asset-name vertical-center">%Rate%</span><span onclick="deleteOrder(event)" class="close">&times;</span></li>';
+    
+    htmlString = htmlString.replace("%Name%",name);
+    htmlString = htmlString.replace("%Volume%",volume);
+    htmlString = htmlString.replace("%Rate%",rate);
+    htmlString = htmlString.replace("%Type%",type);
+
+    my_orders =document.getElementById('my-orders');
+
+    my_orders.insertAdjacentHTML('beforeend',htmlString);
 
 }
+
+function deleteOrder(ele){
+    var childNodes = ele.target.parentNode.childNodes;
+
+    var asset, type, rate, volume;
+
+    asset = childNodes[0].textContent;
+    type = childNodes[1].textContent;
+    rate = parseFloat(childNodes[3].textContent);
+    volume = parseFloat(childNodes[2].textContent);
+
+    
+    $.post("handlers/ajax/cancel_order.php",{asset: asset,type: type, rate: rate, volume: volume}).done(function(error){
+        if(error){
+            document.getElementById('notice-box').innerHTML = error;
+        } else {
+            document.getElementById('notice-box').innerHTML = "<div class='alert alert-success alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>Success!</strong> Order Canceled</div>";
+
+            openPage('account.php');
+        }
+    });
+}
+
+
