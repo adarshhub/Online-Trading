@@ -166,25 +166,14 @@ function place_order(type){
                         temp_notice_box.innerHTML = error;
                     } else {
                         temp_notice_box.innerHTML = "<div class='alert alert-success alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>Success!</strong> Order Placed</div>";
+
+                        openPage("index.php?asset="+currentAsset);
                     }
                 });
             }
         }
     }
 
-    /*
-    request.onload = function(volume) {
-        var data = JSON.parse(request.responseText);
-        var currentAsset_Price = data.prices.inr[currentAsset];
-        var diff = Math.abs(currentAsset_Price - rate);
-        if(diff > (currentAsset_Price*0.1)){
-            document.getElementById('notice-box').innerHTML = "<div class='alert alert-warning alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>OOPs!</strong> Rate cannot be greater or less than 10%</div>"
-        } else {
-            temp(volume);
-            //$.post("handlers/ajax/sell_order.php",{asset: currentAsset})
-        }
-    }
-*/
     request.send(); 
     
 }
@@ -225,4 +214,19 @@ function deleteOrder(ele){
     });
 }
 
+function init_orders(type,obj){
+
+    var htmlString;
+    var size = obj.rates.length;
+    var container = document.getElementById(type+'-order-body');
+
+    for(var i = 0; i < size; i++){
+        htmlString = "<tr class='danger'><td>%volume%</td><td>%rate%</td></tr>"
+        htmlString = htmlString.replace('%volume%',obj.volumes[i]);
+        htmlString= htmlString.replace('%rate%',obj.rates[i]);
+
+        container.insertAdjacentHTML('beforeend',htmlString);
+
+    }
+}
 

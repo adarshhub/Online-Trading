@@ -1,18 +1,50 @@
 <?php  include "includes/includedFiles.php"; 
-    echo "<script>init_market()</script>";
+include "config/config.php"; 
 
     $url = $_SERVER['REQUEST_URI'];
+    $username = $_SESSION['username'];
 
     if($url == "index.php" || strpos($url, '?') == FALSE){
         $url = $url.'?asset=ETH';
         echo "<script>openPage('$url')</script>";
-    }
+        return;
+    } 
 
+    echo "<script>init_market();</script>";
+
+    $asset ="";
+    
     if(isset($_GET['asset'])){
 
         $asset = $_GET['asset'];
        echo "<script>initAsset('$asset')</script>";
 
+    }
+
+    function order_query($type,$query){
+        if(mysqli_num_rows($query)>0){
+                           
+            $rate_array = array();
+            $volume_array = array();
+
+            while($row = mysqli_fetch_array($query)){
+                $rate = $row['rate'];
+                $volume = $row['volume'];
+
+                array_push($rate_array,$rate);
+                array_push($volume_array,$volume);
+            }
+
+            $order = new \stdClass();
+
+            $order->rates = $rate_array;
+            $order->volumes = $volume_array;
+
+            $order = json_encode($order);
+
+
+            echo "<script>init_orders('$type',$order)</script>";
+        }
     }
 ?>
 
@@ -30,36 +62,29 @@
         <div id="order-container">
             <h2><span id="asset-name" class="label label-primary">Asset Name</span></h2>
             <div id="sell-orders-box">
-                Sell Order
+                Sell Orders
                 <table id="sell-order-table" class="table">
                     <thead>
                         <tr>
                             <th>Volume</th>
-                            <th>Price</th>
+                            <th>Rate</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="danger">
-                            <td>10.00</td>
-                            <td>50.00</td>
-                        </tr>
-                        <tr class="danger">
-                            <td>11.00</td>
-                            <td>49.00</td>
-                        </tr>
-                        <tr class="danger">
-                            <td>10.00</td>
-                            <td>50.00</td>
-                        </tr>
-                        <tr class="danger">
-                            <td>11.00</td>
-                            <td>49.00</td>
-                        </tr>
+                    <tbody id="sell-order-body">
+                        <?php
+                        
+                        $sell_order_query = mysqli_query($con,"SELECT rate,volume FROM $asset WHERE placed_by='$username' AND order_type='sell' ORDER BY rate ASC LIMIT 4");
+
+                        if($sell_order_query){
+                            order_query('sell',$sell_order_query);
+                        }
+                        
+                        ?>
                     </tbody>
                 </table>
             </div>
             <div id="buy-orders-box">
-                Buy orders
+                Buy Orders
                 <table id="buy-order-table" class="table">
                     <thead>
                         <tr>
@@ -67,23 +92,16 @@
                             <th>Price</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="danger">
-                            <td>10.00</td>
-                            <td>50.00</td>
-                        </tr>
-                        <tr class="danger">
-                            <td>11.00</td>
-                            <td>49.00</td>
-                        </tr>
-                        <tr class="danger">
-                            <td>10.00</td>
-                            <td>50.00</td>
-                        </tr>
-                        <tr class="danger">
-                            <td>11.00</td>
-                            <td>49.00</td>
-                        </tr>
+                    <tbody id="buy-order-body">
+                        <?php
+                        
+                        $buy_order_query = mysqli_query($con,"SELECT rate,volume FROM $asset WHERE placed_by='$username' AND order_type='buy' ORDER BY rate DESC LIMIT 4");
+
+                        if($buy_order_query){
+                            order_query('buy',$buy_order_query);
+                        }
+
+                        ?>
                     </tbody>
                 </table>
             </div>

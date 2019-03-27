@@ -1,5 +1,6 @@
 <?php
 include("../../config/config.php");
+require("../../config/trade.php");
 
 if(isset($_POST['type']) && isset($_POST['asset']) && isset($_POST['volume']) && isset($_POST['rate'])){
 
@@ -21,21 +22,8 @@ if(isset($_POST['type']) && isset($_POST['asset']) && isset($_POST['volume']) &&
         return;
     }
 
-    $new_order_asset_query = mysqli_query($con,"INSERT into $asset (order_type, placed_by, volume, rate) VALUES ('$type','$username','$volume','$rate')");
-
-    $id_query = mysqli_query($con,"SELECT id FROM $asset WHERE placed_by='$username' AND rate='$rate' AND order_type='$type' LIMIT 1");
-    $row = mysqli_fetch_array($id_query);
-    $order_id  = $row['id'];
-    
-    mysqli_query($con,"INSERT into orders (asset, placed_by, num_id) VALUES ( '$asset', '$username', '$order_id')");
-    /*
-    $id_query = mysqli_query($con,"SELECT id FROM orders WHERE placed_by='$username' AND asset='$asset' LIMIT 1");
-
-    $row = mysqli_fetch_array($id_query);
-    $order_id  = $row['id'];
-
-    */
-    
+    add_order($asset, $type, $username, $volume, $rate);
+    return;
    
 } else {
     echo "<div class='alert alert-danger alert-dismissible'>
