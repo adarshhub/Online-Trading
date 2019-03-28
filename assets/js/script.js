@@ -145,8 +145,11 @@ function changePassword(){
 }
 
 function place_order(type){
-    var volume = parseInt(document.getElementById(type+'-volume').value);
-    var rate = parseInt(document.getElementById(type+'-rate').value);
+    var volume = document.getElementById(type+'-volume').value;
+    var rate = document.getElementById(type+'-rate').value;
+
+    console.log("Volume: "+ volume);
+    console.log('Rate: '+rate);
 
     var request = new XMLHttpRequest();
     
@@ -230,3 +233,24 @@ function init_orders(type,obj){
     }
 }
 
+function init_balance(balance){
+    var htmlString;
+    var size = balance.assets.length;
+    var container = document.getElementById('my-balance');
+
+    for(var i = 0; i < size; i++){
+        htmlString = '<li class="alert alert-success order-list-item"><span class="asset-name vertical-center"><strong>%asset%</strong></span><span class="asset-name vertical-center"><strong>%amount%</strong></span></li>';
+
+        if(balance.assets[i] != 'inr'){
+            htmlString = htmlString.replace('%asset%',balance.assets[i]);
+            htmlString= htmlString.replace('%amount%',balance.amounts[i]);
+
+            container.insertAdjacentHTML('beforeend',htmlString);
+        } else {
+            document.getElementById('inr-balance').textContent = balance.amounts[i];
+        }
+
+        
+
+    }
+}

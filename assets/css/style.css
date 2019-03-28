@@ -213,3 +213,8 @@ nav {
 .hide{
     display:none;
 }
+
+#my-balance{
+    overflow: scroll;
+    height: 500px;;
+}

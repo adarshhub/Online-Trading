@@ -58,6 +58,7 @@ if(isset($_POST['register_button'])){
                 $registering = mysqli_query($con,"INSERT INTO users (username, firstname, lastname, email, password, dateOfJoining) VALUES ('$uname', '$fname', '$lname', '$email', '$password1', '$date')");
                 
                 if($registering){
+                    mysqli_query($con,"INSERT INTO balance (username, asset, amount) VALUES ('$uname', 'inr', 10000)");
                     echo "Registration Successfull";
                 } else {
                     echo "something went Wrong!";

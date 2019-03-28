@@ -73,7 +73,7 @@ include "config/config.php";
                     <tbody id="sell-order-body">
                         <?php
                         
-                        $sell_order_query = mysqli_query($con,"SELECT rate,volume FROM $asset WHERE placed_by='$username' AND order_type='sell' ORDER BY rate ASC LIMIT 4");
+                        $sell_order_query = mysqli_query($con,"SELECT rate,volume FROM $asset WHERE order_type='sell' ORDER BY rate ASC LIMIT 4");
 
                         if($sell_order_query){
                             order_query('sell',$sell_order_query);
@@ -95,7 +95,7 @@ include "config/config.php";
                     <tbody id="buy-order-body">
                         <?php
                         
-                        $buy_order_query = mysqli_query($con,"SELECT rate,volume FROM $asset WHERE placed_by='$username' AND order_type='buy' ORDER BY rate DESC LIMIT 4");
+                        $buy_order_query = mysqli_query($con,"SELECT rate,volume FROM $asset WHERE order_type='buy' ORDER BY rate DESC LIMIT 4");
 
                         if($buy_order_query){
                             order_query('buy',$buy_order_query);
@@ -108,13 +108,13 @@ include "config/config.php";
         </div>
         <div id="trade-container">
             <div id="sell-box">
-                <input type="number" class="form-control" placeholder="Volume" id="sell-volume">
-                <input type="number" class="form-control" placeholder="Rate" id="sell-rate">
+                <input type="number" class="form-control" placeholder="Volume" id="sell-volume" step="0.01" min="0">
+                <input type="number" class="form-control" placeholder="Rate" id="sell-rate" step="0.01" min="0">
                 <button class="btn btn-primary" id="sell-button" onclick="place_order('sell')">Sell</button>
             </div>
             <div id="buy-box">
-                <input type="number" class="form-control" placeholder="Volume" id="buy-volume">
-                <input type="number" class="form-control" placeholder="Rate" id="buy-rate">
+                <input type="number" class="form-control" placeholder="Volume" id="buy-volume" step="0.01" min="0">
+                <input type="number" class="form-control" placeholder="Rate" id="buy-rate" step="0.01" min="0">
                 <button class="btn btn-primary" id="buy-button" onclick="place_order('buy')">Buy</button>
             </div>
             

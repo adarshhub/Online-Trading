@@ -61,4 +61,37 @@ $email = $row['email'];
             ?>
         </ul>
     </div>
+    <div id="balance-container" >
+        <h2>Balance</h2>
+        <ul id="my-balance" class="list-group">
+            <li class="alert alert-default order-list-item"><span class="asset-name vertical-center"><strong>INR</strong></span><span class="asset-name vertical-center" id="inr-balance"><strong>0</strong></span></li>
+            <?php 
+            $mybalance_query = mysqli_query($con,"SELECT asset, amount FROM balance WHERE username='$username'");
+            if(mysqli_num_rows($mybalance_query) > 0){
+                           
+                $asset_array = array();
+                $amount_array = array();
+    
+                while($row = mysqli_fetch_array($mybalance_query)){
+                    $asset = $row['asset'];
+                    $amount = $row['amount'];
+    
+                    array_push($asset_array,$asset);
+                    array_push($amount_array,$amount);
+                }
+    
+                $balance = new \stdClass();
+    
+                $balance->assets = $asset_array;
+                $balance->amounts = $amount_array;
+    
+                $balance = json_encode($balance);
+    
+    
+                echo "<script>init_balance($balance)</script>";
+            }
+    
+            ?>
+        </ul>
+    </div>
 </div>
