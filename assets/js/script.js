@@ -23,6 +23,7 @@ function init_market(){
     request.open('GET','https://koinex.in/api/ticker');
 
     request.onload =  function(){
+        document.querySelector('.loader').classList.toggle('hide');
         var assetListContainer = document.getElementById('asset-list');
         var data = JSON.parse(request.responseText);
         var coinData = data.stats.inr;

@@ -59,9 +59,15 @@ if(isset($_POST['register_button'])){
                 
                 if($registering){
                     mysqli_query($con,"INSERT INTO balance (username, asset, amount) VALUES ('$uname', 'inr', 10000)");
-                    echo "Registration Successfull";
+
+                    echo "<div id='register-notice-box'>
+                    <div class='alert alert-success alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>Success!</strong> Registration Successfull</div>
+                    </div>";
+                    
                 } else {
-                    echo "something went Wrong!";
+                    echo "<div id='register-notice-box'>
+                    <div class='alert alert-warning alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>OOPs!</strong> something went Wrong</div>
+                    </div>";
                 }
             } else {
 

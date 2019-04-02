@@ -55,6 +55,7 @@ include "config/config.php";
                 <span class="current-bid-title normal-title">Lowest Ask</span>
         </div>
         <div id="asset-list">
+            <div class="loader"></div>
         </div>
     </div>
     

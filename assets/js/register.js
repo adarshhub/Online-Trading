@@ -9,4 +9,5 @@ $(document).ready(function(){
             $('#register-box').slideDown('slow');
         });
     }); 
-})
+});
+

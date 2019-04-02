@@ -1,7 +1,7 @@
 <?php
 require 'config/config.php';
-require 'handlers/login_handler.php';
-require 'handlers/register_handler.php';
+include 'handlers/login_handler.php';
+include 'handlers/register_handler.php';
 
 ?>
 
@@ -9,8 +9,13 @@ require 'handlers/register_handler.php';
 <!DOCTYPE html>
 <head>
     <title>Register Youself!</title>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
     <link rel="stylesheet" type="text/css"  href="assets/css/register.css" />
+
+    <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.js"></script>
 	<script src="assets/js/register.js"></script>
 </head>
 <body>
@@ -19,7 +24,9 @@ require 'handlers/register_handler.php';
         if(isset($_POST['register_button'])){
             if($error_array){
                 foreach($error_array as $error){
-                    echo $error;
+                    echo "<div id='register-notice-box'>
+                <div class='alert alert-warning alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>OOPs!</strong> $error</div>
+                </div>";
                 }
             } 
         }
@@ -64,6 +71,5 @@ require 'handlers/register_handler.php';
             </form>
         </div>
     </div>
-    
 </body>
 </html>

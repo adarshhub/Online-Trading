@@ -13,7 +13,9 @@ if(isset($_POST['login_button'])){
         $_SESSION['username'] = $username;
         header("Location: index.php");
     } else {
-        echo "email or password is incorrect";
+        echo "<div id='register-notice-box'>
+        <div class='alert alert-warning alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>OOPs!</strong> email or password is incorrect</div>
+        </div>";
     }
 }
 
