@@ -1,6 +1,6 @@
 <?php
 include("../../config/config.php");
-require("../../config/trade.php");
+include("../../config/trade.php");
 
 if(isset($_POST['type']) && isset($_POST['asset']) && isset($_POST['volume']) && isset($_POST['rate'])){
 
@@ -24,6 +24,20 @@ if(isset($_POST['type']) && isset($_POST['asset']) && isset($_POST['volume']) &&
                 return;
 
         }
+
+        
+        $current_balance = get_balance($username,'inr');
+        $current_balance = $current_balance -($volume * $rate);
+
+        $update_balance_query = update_balance($username, "inr", $current_balance);
+
+        if($update_balance_query != 1){
+            delete_order_by_id($order_id, $asset);
+            return FALSE;
+        }
+        
+            
+        
     } else {
         $current_balance = get_balance($username, $asset);
 
@@ -35,6 +49,11 @@ if(isset($_POST['type']) && isset($_POST['asset']) && isset($_POST['volume']) &&
 
                 return;
         }
+
+        $current_balance = get_balance($username, $asset);
+        $current_balance = $current_balance - $volume;
+    
+        update_balance($username, $asset, $current_balance);
     }
 
     $same_order_query = mysqli_query($con,"SELECT * FROM $asset WHERE placed_by='$username' AND rate='$rate' AND order_type='$type'");
