@@ -59,6 +59,7 @@ function assetListener(){
             } else if(ele.target.className == 'asset'){
                 asset = ele.srcElement.childNodes[0].textContent;
             }
+            asset=asset.toLowerCase();
             loadAsset(asset);
         });
 
@@ -71,8 +72,8 @@ function loadAsset(asset){
 }
 
 function initAsset(asset){
-    currentAsset = asset;
-    document.getElementById('asset-name').innerHTML = asset;
+    currentAsset = asset.toLowerCase();
+    document.getElementById('asset-name').innerHTML = asset.toUpperCase();
 }
 
 function editProfile(){

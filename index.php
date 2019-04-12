@@ -5,7 +5,7 @@ include "config/config.php";
     $username = $_SESSION['username'];
 
     if($url == "index.php" || strpos($url, '?') == FALSE){
-        $url = $url.'?asset=ETH';
+        $url = $url.'?asset=eth';
         echo "<script>openPage('$url')</script>";
         return;
     } 
