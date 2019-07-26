@@ -58,7 +58,7 @@ if(isset($_POST['register_button'])){
                 $registering = mysqli_query($con,"INSERT INTO users (username, firstname, lastname, email, password, dateOfJoining) VALUES ('$uname', '$fname', '$lname', '$email', '$password1', '$date')");
                 
                 if($registering){
-                    mysqli_query($con,"INSERT INTO balance (username, asset, amount) VALUES ('$uname', 'inr', 10000)");
+                    
 
                     echo "<div id='register-notice-box'>
                     <div class='alert alert-success alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>Success!</strong> Registration Successfull</div>

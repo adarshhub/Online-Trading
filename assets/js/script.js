@@ -28,11 +28,18 @@ function init_market(){
         var data = JSON.parse(request.responseText);
         var coinData = data.stats.inr;
 
+        var assets = {};
+
         for(var coin in coinData){
 
-            var htmlString = '<div class="asset"><span class="asset-name vertical-center">'+coin+'</span><span class="asset-last-trade-price vertical-center">'+coinData[coin].last_traded_price+'</span> <span class="asset-current-bid vertical-center">'+coinData[coin].lowest_ask+'</span></div>';
+            assets[coin]  = 0;
+
+            var htmlString = '<tr class="asset-list asset table-primary"><td>'+coin+'</td><td>'+coinData[coin].last_traded_price+'</td><td>'+coinData[coin].lowest_ask+'</td></tr>';
+            //var htmlString = '<div class="asset"><span class="asset-name vertical-center">'+coin+'</span><span class="asset-last-trade-price vertical-center">'+coinData[coin].last_traded_price+'</span> <span class="asset-current-bid vertical-center">'+coinData[coin].lowest_ask+'</span></div>';
             assetListContainer.insertAdjacentHTML('beforeend', htmlString);
         }
+
+         sessionStorage.setItem('assets',JSON.stringify(assets));
         
     }
 
@@ -53,10 +60,11 @@ function assetListener(){
     assets.forEach(function(asset){
     
         asset.addEventListener('click',function(ele){
+
             var asset;
-            if(ele.target.parentElement.className == 'asset'){
+            if(ele.target.parentElement.classList[0] == 'asset-list'){
                 asset = ele.target.parentNode.childNodes[0].textContent;
-            } else if(ele.target.className == 'asset'){
+            } else if(ele.target.classList[0] == 'asset-list'){
                 asset = ele.srcElement.childNodes[0].textContent;
             }
             asset=asset.toLowerCase();
@@ -150,9 +158,6 @@ function place_order(type){
     var volume = document.getElementById(type+'-volume').value;
     var rate = document.getElementById(type+'-rate').value;
 
-    console.log("Volume: "+ volume);
-    console.log('Rate: '+rate);
-
     var request = new XMLHttpRequest();
     
     request.open('GET','https://koinex.in/api/ticker' );
@@ -184,13 +189,8 @@ function place_order(type){
 }
 
 function init_order_list(name, volume, rate, type){
-    var htmlString = '<li class="asset order-list-item"><span class="asset-name vertical-center">%Name%</span><span class="asset-name vertical-center">%Type%</span><span class="asset-name vertical-center">%Volume%</span><span class="asset-name vertical-center">%Rate%</span><span onclick="deleteOrder(event)" class="close">&times;</span></li>';
-    
-    htmlString = htmlString.replace("%Name%",name);
-    htmlString = htmlString.replace("%Volume%",volume);
-    htmlString = htmlString.replace("%Rate%",rate);
-    htmlString = htmlString.replace("%Type%",type);
-
+    var htmlString = '<tr class="asset"><td>'+name+'</td><td>'+type+'</td><td>'+volume+'</td><td>'+rate+'<span onclick="deleteOrder(event)" class="close">&times;</span></td></tr>';
+   
     my_orders =document.getElementById('my-orders');
 
     my_orders.insertAdjacentHTML('beforeend',htmlString);
@@ -198,14 +198,15 @@ function init_order_list(name, volume, rate, type){
 }
 
 function deleteOrder(ele){
-    var childNodes = ele.target.parentNode.childNodes;
+    
+    var childNodes = ele.target.parentElement.parentElement.childNodes;
 
     var asset, type, rate, volume;
 
     asset = childNodes[0].textContent;
     type = childNodes[1].textContent;
-    rate = parseFloat(childNodes[3].textContent);
     volume = parseFloat(childNodes[2].textContent);
+    rate = parseFloat(childNodes[3].textContent);
 
     
     $.post("handlers/ajax/cancel_order.php",{asset: asset,type: type, rate: rate, volume: volume}).done(function(error){
@@ -224,32 +225,48 @@ function init_orders(type,obj){
     var htmlString;
     var size = obj.rates.length;
     var container = document.getElementById(type+'-order-body');
+    var no_order_msg = document.getElementById('no-'+type+'-order-msg');
 
-    for(var i = 0; i < size; i++){
-        htmlString = "<tr class='danger'><td>%volume%</td><td>%rate%</td></tr>"
-        htmlString = htmlString.replace('%volume%',obj.volumes[i]);
-        htmlString= htmlString.replace('%rate%',obj.rates[i]);
+    if(size == 0){
+        no_order_msg.hidden  = false;
+    } else {
+        no_order_msg.hidden  = true;
 
-        container.insertAdjacentHTML('beforeend',htmlString);
+        for(var i = 0; i < size; i++){
+            htmlString = "<tr><td>%volume%</td><td>%rate%</td></tr>"
+            htmlString = htmlString.replace('%volume%',obj.volumes[i]);
+            htmlString= htmlString.replace('%rate%',obj.rates[i]);
 
+            container.insertAdjacentHTML('beforeend',htmlString);
+
+        }
     }
+
+    
 }
 
 function init_balance(balance){
-    var htmlString;
+
+    var htmlString, i;
     var size = balance.assets.length;
     var container = document.getElementById('my-balance');
+    var assets = JSON.parse( sessionStorage.assets);
+    for(i = 0; i < size; i++){
+        assets[balance.assets[i]] = balance.amounts[i];
+    }
 
-    for(var i = 0; i < size; i++){
-        htmlString = '<li class="alert alert-success order-list-item"><span class="asset-name vertical-center"><strong>%asset%</strong></span><span class="asset-name vertical-center"><strong>%amount%</strong></span></li>';
+    sessionStorage.assets = JSON.stringify(assets);
 
-        if(balance.assets[i] != 'inr'){
-            htmlString = htmlString.replace('%asset%',balance.assets[i]);
-            htmlString= htmlString.replace('%amount%',balance.amounts[i]);
+    for(asset in assets){
+        htmlString = '<li class="alert alert-success order-list-item"><span class="asset-name col-sm-4"><strong>%asset%</strong></span><span class="asset-name col-sm-3"><strong>%amount%</strong></span></li>';
+
+        if(asset != 'inr'){
+            htmlString = htmlString.replace('%asset%',asset);
+            htmlString= htmlString.replace('%amount%',assets[asset]);
 
             container.insertAdjacentHTML('beforeend',htmlString);
         } else {
-            document.getElementById('inr-balance').textContent = balance.amounts[i];
+            document.getElementById('inr-balance').textContent = assets[asset];
         }
 
         

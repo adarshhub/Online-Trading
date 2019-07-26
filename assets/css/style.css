@@ -35,25 +35,82 @@ nav {
 }
 
 .wrapper{
-    max-width: 1300px;
-    height: auto;
     margin-top: 18px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0 18px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 #main-container > div {
+    float: none;
+}
+
+@media(min-width: 800px){
+
+    #asset-list-container{
+        width: 56%;
+        height: 100%;
+    }
+
+    #main-container > div {
+        float: left;
+    }
+
+    table {
+        font-size: 1em;
+    }
+
+    .wrapper{
+        max-width: 1300px;
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #asset-details-container {
+        max-width: 40%;
+        height: 500px;
+    }
+
+    #order-container{
+        padding: 0 18px;
+        width: 100%;
+    }
+}
+
+#order-container{
+    overflow: auto;
+    min-height: 250px;
+    padding: 0 10px;
+    width: 100%;
+    border-bottom: 1px solid #333;
+}
+
+#asset-details-container {
+    padding-top:  10px 0 0 0;
+    width: 100%;
+    height: auto;
+}
+
+table {
+        font-size: 0.9rem;
+    }
+
+#asset-list-container{
+    padding: 10px;
+    max-height: 85vh;
+    border-right: 1px solid #333;
+    overflow-y: scroll;
     float: left;
 }
 
-#asset-list-container{
-    
-    width: 60%;
-    padding: 18px;
-    height: 580px;
-    border-right: 1px solid #333;
+#asset-list-container tbody{
+   cursor: pointer;
 }
+
+.table thead th {
+    vertical-align: middle;
+}
+/*
 
 #asset-list{
     overflow: scroll;
@@ -61,11 +118,8 @@ nav {
     height: 90%;
 }
 
-#asset-details-container {
-    width: 40%;
-    padding: 18px;
-    height: 500px;
-}
+*/
+
 
 .vertical-center{
     top: 50%;
@@ -103,17 +157,6 @@ nav {
     text-align: right;
 }
 
-.asset {
-    width: 99%;
-    background-color: rgba(62, 50, 185, 0.74);
-    height: 60px;
-    border: 1px 0.95 #111;
-    border-radius: 5px;
-    margin:4px;
-    color: #fff;
-    cursor: pointer;
-}
-
 .asset-name{
     float: left;
     width: 30%;
@@ -134,15 +177,6 @@ nav {
     width: 30%;
     text-align: right;
     padding-right: 9px;
-}
-
-#order-container{
-    padding: 0 18px;
-    top: 0;
-    height: 70%;
-    width: 100%;
-    position: relative;
-    border-bottom: 1px solid #333;
 }
 
 #trade-container > div, #order-container > div {
@@ -166,12 +200,13 @@ nav {
     float: right;
 }
 
-#sell-orders-box, #buy-orders-box{
-    width: 50%;
-}
-
 #sell-box, #sell-orders-box{
     border-right: 1px solid #333;
+}
+/*
+
+#sell-orders-box, #buy-orders-box{
+    width: 50%;
 }
 
 #profile-details-container .form-group{
@@ -182,6 +217,7 @@ nav {
     white-space: nowrap;
     margin-right: 15px;
 }
+
 
 #edit-profile-button{
     position: absolute;
@@ -195,6 +231,8 @@ nav {
     right: 15px;
 }
 
+*/
+
 #notice-box{
     z-index: 10;
     position: fixed;
@@ -207,7 +245,7 @@ nav {
 }
 
 .sub-container{
-    display: contents;
+    width: 100%
 }
 
 .hide{
@@ -215,20 +253,19 @@ nav {
 }
 
 #my-balance{
-    overflow: scroll;
-    height: 500px;;
+    overflow-y: scroll;
+    height: 90%;
 }
 
 .loader {
-    position: absolute;
-    left: 41%;
+    left: 50%;
     top: 50%;
     transform: translateY(-50%);
-    border: 16px solid #f3f3f3;
+    border: 8px solid #f3f3f3;
     border-radius: 50%;
-    border-top: 16px solid rgba(62, 50, 185, 0.74);
-    width: 100px;
-    height: 100px;
+    border-top: 8px solid rgba(62, 50, 185, 0.74);
+    width: 50px;
+    height: 50px;
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite ;
   }

@@ -10,30 +10,43 @@ $lastname = ucfirst($row['lastname']);
 $email = $row['email'];
 ?>
 
-<div class="sub-container">
-    <div id="profile-details-container">
-        <form class="form-horizontal">
-            <div class="form-group">
-                <label for="profile-firstname" class="control-label col-sm-3">First Name:</label>
-                <input required type="text" class="form-control col-sm-5" name="profile-firstname" id="profile-firstname" value="<?php echo $firstname; ?>" disabled>
+<div class="sub-container form-inline">
+    <div class="col-sm-8 mb-2 row-sm-10" style="height: 88vh;">
+        <div id="profile-details-container" class="form-inline">
+            <div id="profile-inputs" class="col-sm-9">
+                <div class="form-inline mb-2">
+                    <label for="profile-firstname" class="control-label col-sm-3">First Name:</label>
+                    <input required type="text" class="form-control col-sm-4" name="profile-firstname" id="profile-firstname" value="<?php echo $firstname; ?>" disabled>
+                </div>
+                <div class="form-inline mb-2">
+                    <label for="profile-lastname" class="control-label col-sm-3">Last Name:</label>
+                    <input required type="text" class="form-control col-sm-4" name="profile-lastname" id="profile-lastname" value="<?php echo $lastname; ?>" disabled>
+                </div>
+                <div class="form-inline mb-2">
+                    <label for="profile-email" class="control-label col-sm-3">Email address:</label>
+                    <input required type="email" class="form-control col-sm-4" name="profile-email" id="profile-email" value="<?php echo $email; ?>" disabled>
+                </div>
+            </div>  
+            <div id="profile-btns" class="col-sm-1">
+                <button type="button" class="btn btn-warning mb-2" id="edit-profile-button" onclick="editProfile()">Edit Profile</button>
+                <button type="button" class="btn btn-danger mb-2" id="change-password-button" data-toggle="modal" data-target="#passwordChangeModal">Change Password</button>
             </div>
-            <div class="form-group">
-                <label for="profile-lastname" class="control-label col-sm-3">Last Name:</label>
-                <input required type="text" class="form-control col-sm-5" name="profile-lastname" id="profile-lastname" value="<?php echo $lastname; ?>" disabled>
-            </div>
-            <div class="form-group">
-                <label for="profile-email" class="control-label col-sm-3">Email address:</label>
-                <input required type="email" class="form-control col-sm-5" name="profile-email" id="profile-email" value="<?php echo $email; ?>" disabled>
-            </div>
-            <button type="button" class="btn btn-warning" id="edit-profile-button" onclick="editProfile()">Edit Profile</button>
-            <button type="button" class="btn btn-danger" id="change-password-button" data-toggle="modal" data-target="#passwordChangeModal">Change Password</button>
-        </form>
-    </div>
-    <div id="asset-holding-container" >
-        <h2>My Orders</h2>
-        <ul id="my-orders" class="list-group">
-        <li class="alert alert-default order-list-item"><span class="asset-name vertical-center"><strong>Name</strong></span><span class="asset-name vertical-center"><strong>Type</strong></span><span class="asset-name vertical-center"><strong>Volume</strong></span><span class="asset-name vertical-center"><strong>Rate</strong></span></li>
-        <div class='alert alert-info' id="no-orders"><strong>No Open Orders!</strong></div>
+        </div>
+        <div id="asset-holding-container" >
+            <h2>My Orders</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Volume</th>
+                        <th scope="col">Rate</th>
+                    </tr>
+                </thead>
+            <tbody id="my-orders">
+            </tbody>
+            </table>
+            <div class='alert alert-info' id="no-orders"><strong>No Open Orders!</strong></div>
             <?php 
             $myorder_query = mysqli_query($con,"SELECT asset, num_id FROM orders WHERE placed_by='$username'");
             while($row = mysqli_fetch_array($myorder_query)){
@@ -59,12 +72,14 @@ $email = $row['email'];
                 }
             }
             ?>
-        </ul>
+            </ul>
+        </div>
     </div>
-    <div id="balance-container" >
-        <h2>Balance</h2>
-        <ul id="my-balance" class="list-group">
-            <li class="alert alert-default order-list-item"><span class="asset-name vertical-center"><strong>INR</strong></span><span class="asset-name vertical-center" id="inr-balance"><strong>0</strong></span></li>
+    <div class="col-sm-3" style="height: 88vh;">
+        <div id="balance-container" >
+        <h2 class="display-4 mb-2">Balance</h2>
+        <div class="form-inline"><h2 class="col-sm-4">INR</h2><strong><span class="asset-name col-sm-3" id="inr-balance">0</span></strong></div>
+        <ul id="my-balance" class="list-group">  
             <?php 
             $mybalance_query = mysqli_query($con,"SELECT asset, amount FROM balance WHERE username='$username'");
             if(mysqli_num_rows($mybalance_query) > 0){
@@ -92,6 +107,7 @@ $email = $row['email'];
             }
     
             ?>
-        </ul>
+            </ul>
+        </div>
     </div>
 </div>

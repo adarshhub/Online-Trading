@@ -1,6 +1,93 @@
 <?php
 $con = mysqli_connect("localhost", "root", "", "online_trading");
 
+function check_match($asset){
+    global $con;
+
+    $query = mysqli_query($con, "SELECT * FROM $asset WHERE order_type= 'buy' ORDER BY rate DESC LIMIT 1");
+
+    if($row = mysqli_fetch_array($query)){
+
+        //1st person order details
+        $first_username = $row['placed_by'];
+        $first_order_volume = $row['volume'];
+        $first_order_id = $row['id'];
+        $first_order_rate = $row['rate'];
+        $first_order_type = $row['order_type'];
+
+        $query = mysqli_query($con, "SELECT * FROM $asset WHERE order_type= 'sell' ORDER BY rate LIMIT 1");
+
+        if($row = mysqli_fetch_array($query)){
+
+            //2nd person order details
+            $second_Order_id = $row['id'];
+            $second_order_volume = $row['volume'];
+            $second_order_rate = $row['rate'];
+            $second_username = $row['placed_by'];
+
+            if($first_order_rate >= $second_order_rate){
+
+                $first_volume = get_balance($first_username, $asset);
+                $second_volume = get_balance($second_username, $asset);
+                $trade_volume = $second_order_volume;
+
+                //updating orders
+                if($second_order_volume > $first_order_volume){
+
+                    $first_volume =  $first_volume + $first_order_volume;
+                    $trade_volume = $first_order_volume;
+
+                    $remain_volume = $second_order_volume - $first_order_volume;
+                    update_order_by_id($second_Order_id, $asset, $remain_volume);
+                    delete_order_by_id($first_order_id, $asset);
+
+                } else if($second_order_volume < $first_order_volume){
+
+                    $first_volume = $first_volume + $second_order_volume;
+
+                    $remain_volume = $first_order_volume - $second_order_volume;
+                    update_order_by_id($first_order_id, $asset, $remain_volume);
+                    delete_order_by_id($second_Order_id, $asset);
+                } else {
+
+                    $first_volume =  $first_volume + $first_order_volume;
+                    
+                    delete_order_by_id($second_Order_id, $asset);
+                    delete_order_by_id($first_order_id, $asset);
+                }
+
+                //1. reduce volume of 2nd
+                    //----Already done during placing order---
+                //2. update volume of 1st 
+                update_balance($first_username, $asset, $first_volume);
+                //3. reduce inr of 1st
+                $inr_required = $trade_volume * $second_order_rate;
+                    //----Already done during placing order---
+                    //----If trade completed in low rate
+                if($first_order_rate > $second_order_rate){
+
+                    $remain_balance = ($first_order_rate * $trade_volume) - $inr_required;
+                    $current_inr = get_balance($first_username,'inr');
+                    $updated_inr = $current_inr + $remain_balance;
+                    update_balance($first_username, 'inr', $updated_inr);
+                }
+                //4. update inr of 2nd
+                
+                $current_inr = get_balance($second_username,'inr');
+                $updated_inr = $current_inr + $inr_required;
+                update_balance($second_username, 'inr', $updated_inr);
+
+                check_match($asset);
+            }
+            
+        }
+
+    }
+}
+
+
+/*
+
 function check_trade( $type, $asset, $id){
     global $con;
 
@@ -19,6 +106,7 @@ function check_trade( $type, $asset, $id){
     if($first_order_type == $second_order_type){
         $second_order_type = 'buy';
     }
+
     if($first_order_type == 'buy'){
         $find_trader = mysqli_query($con,"SELECT * FROM $asset WHERE order_type='$second_order_type' ORDER BY rate DESC LIMIT 1");
 
@@ -148,6 +236,8 @@ function check_trade( $type, $asset, $id){
     }
 }   
 
+*/
+
 function get_balance($username, $asset){
     global $con;
     
@@ -180,7 +270,8 @@ function add_order($asset, $type, $username, $volume, $rate){
     $order_id  = asset_id($asset, $username, $rate, $type);
     
     mysqli_query($con,"INSERT into orders (asset, placed_by, num_id) VALUES ( '$asset', '$username', '$order_id')");
-    check_trade($type, $asset, $order_id);
+    //check_trade($type, $asset, $order_id);
+    check_match($asset);
     return True;
 }
 
@@ -218,6 +309,8 @@ function delete_order($asset, $type, $username, $volume, $rate){
     $volume = $total_volume - $volume;
 
     mysqli_query($con,"UPDATE $asset SET volume='$volume' WHERE id='$id'");
+
+    check_match($type, $asset);
  
     return true;
 }
@@ -229,6 +322,7 @@ function delete_order_by_id($id, $asset){
     $delete2 = mysqli_query($con,"DELETE FROM orders WHERE num_id='$id'");
 
     if($delete1 && $delete2){
+        check_match($asset);
         return true;
     } 
     return false;
