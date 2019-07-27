@@ -33,7 +33,7 @@ $email = $row['email'];
             </div>
         </div>
         <div id="asset-holding-container" >
-            <h2>My Orders</h2>
+            <h2 class="display-4">My Orders</h2>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -48,29 +48,42 @@ $email = $row['email'];
             </table>
             <div class='alert alert-info' id="no-orders"><strong>No Open Orders!</strong></div>
             <?php 
-            $myorder_query = mysqli_query($con,"SELECT asset, num_id FROM orders WHERE placed_by='$username'");
-            while($row = mysqli_fetch_array($myorder_query)){
 
-                $asset = $row['asset'];
-                $num_id = $row['num_id'];
+                function get_my_orders(){
+                    global $con, $username;
 
-                $myasset_query= mysqli_query($con,"SELECT * from $asset WHERE placed_by='$username' AND id='$num_id'");
+                    $myorder_query = mysqli_query($con,"SELECT asset, num_id FROM orders WHERE placed_by='$username'");
 
-                if(mysqli_num_rows($myasset_query) > 0){
-                    $order_details = mysqli_fetch_array($myasset_query);
+                    if(mysqli_num_rows($myorder_query) > 0){
 
-                    $type = $order_details['order_type'];
-                    $volume = $order_details['volume'];
-                    $rate = $order_details['rate'];
+                        while($row = mysqli_fetch_array($myorder_query)){
 
-                    echo "<script>init_order_list('$asset', '$volume', '$rate', '$type');
-                    document.getElementById('no-orders').classList.add('hide');
-                    </script>";
-                    
-                } else {
-                    echo "<script>document.getElementById('no-orders').classList.remove('hide');</script>";
+                            $asset = $row['asset'];
+                            $num_id = $row['num_id'];
+
+                            $myasset_query= mysqli_query($con,"SELECT * from $asset WHERE placed_by='$username' AND id='$num_id'");
+
+                            if(mysqli_num_rows($myasset_query) > 0){
+                                $order_details = mysqli_fetch_array($myasset_query);
+
+                                $type = $order_details['order_type'];
+                                $volume = $order_details['volume'];
+                                $rate = $order_details['rate'];
+
+                                echo "<script>init_order_list('$asset', '$volume', '$rate', '$type');
+                                document.getElementById('no-orders').classList.add('hide');
+                                </script>";
+                                
+                            } 
+                        }
+                        
+                    } 
+                    else {
+                        echo "<script>document.getElementById('no-orders').classList.remove('hide');</script>";
+                    }
                 }
-            }
+
+                get_my_orders();
             ?>
             </ul>
         </div>
@@ -81,7 +94,9 @@ $email = $row['email'];
         <div class="form-inline"><h2 class="col-sm-4">INR</h2><strong><span class="asset-name col-sm-3" id="inr-balance">0</span></strong></div>
         <ul id="my-balance" class="list-group">  
             <?php 
+
             $mybalance_query = mysqli_query($con,"SELECT asset, amount FROM balance WHERE username='$username'");
+            
             if(mysqli_num_rows($mybalance_query) > 0){
                            
                 $asset_array = array();
@@ -100,10 +115,10 @@ $email = $row['email'];
                 $balance->assets = $asset_array;
                 $balance->amounts = $amount_array;
     
-                $balance = json_encode($balance);
+                $obj = json_encode($balance);
     
     
-                echo "<script>init_balance($balance)</script>";
+                echo "<script>init_balance($obj);</script>";
             }
     
             ?>

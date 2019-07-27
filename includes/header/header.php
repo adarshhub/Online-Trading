@@ -30,6 +30,6 @@ if (isset($_SESSION['username'])){
             <a href="#" onclick="openPage('index.php')">Market</a>
         </nav>
     </div>
-
+    
     <div id="main-container"class="wrapper">
 

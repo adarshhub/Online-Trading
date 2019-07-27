@@ -75,8 +75,29 @@ function assetListener(){
 }
 
 function loadAsset(asset){
+    
     var encodedURL = encodeURI('index.php?asset='+asset);
-    openPage(encodedURL);
+    //openPage(encodedURL);
+    $("body").scrollTop(0);
+    history.pushState(null, null, encodedURL);
+
+    initAsset(asset);
+
+    var empty_obj = { rates: [], volumes: []};
+
+    init_orders("buy",empty_obj);
+    init_orders("sell",empty_obj);
+
+    $.post("handlers/ajax/asset_details.php",{type: "buy", asset: asset}).done(function(obj){
+       var json_obj = JSON.parse(obj.toString());
+       
+        init_orders("buy",json_obj);
+    });
+
+    $.post("handlers/ajax/asset_details.php",{type: "sell", asset: asset}).done(function(obj){
+       var json_obj = JSON.parse(obj.toString());
+        init_orders("sell",json_obj);
+    });
 }
 
 function initAsset(asset){
@@ -177,7 +198,7 @@ function place_order(type){
                     } else {
                         temp_notice_box.innerHTML = "<div class='alert alert-success alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>Success!</strong> Order Placed</div>";
 
-                        openPage("index.php?asset="+currentAsset);
+                        loadAsset(currentAsset);
                     }
                 });
             }
@@ -227,6 +248,8 @@ function init_orders(type,obj){
     var container = document.getElementById(type+'-order-body');
     var no_order_msg = document.getElementById('no-'+type+'-order-msg');
 
+    container.innerHTML ="";
+
     if(size == 0){
         no_order_msg.hidden  = false;
     } else {
@@ -240,17 +263,17 @@ function init_orders(type,obj){
             container.insertAdjacentHTML('beforeend',htmlString);
 
         }
-    }
-
-    
+    } 
 }
 
 function init_balance(balance){
+
 
     var htmlString, i;
     var size = balance.assets.length;
     var container = document.getElementById('my-balance');
     var assets = JSON.parse( sessionStorage.assets);
+    
     for(i = 0; i < size; i++){
         assets[balance.assets[i]] = balance.amounts[i];
     }
