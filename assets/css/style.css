@@ -254,7 +254,12 @@ table {
 
 #my-balance{
     overflow-y: scroll;
-    height: 80%;
+    height: 72%;
+}
+
+#my-orders{
+    max-height: 30%;
+    overflow-y: scroll;
 }
 
 .loader {

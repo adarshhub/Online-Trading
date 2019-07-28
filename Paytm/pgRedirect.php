@@ -2,9 +2,11 @@
 header("Pragma: no-cache");
 header("Cache-Control: no-cache");
 header("Expires: 0");
+
 // following files need to be included
 require_once("./lib/config_paytm.php");
 require_once("./lib/encdec_paytm.php");
+include("../config/config.php");
 
 $checkSum = "";
 $paramList = array();
@@ -24,8 +26,9 @@ $paramList["CHANNEL_ID"] = $CHANNEL_ID;
 $paramList["TXN_AMOUNT"] = $TXN_AMOUNT;
 $paramList["WEBSITE"] = PAYTM_MERCHANT_WEBSITE;
 
+$paramList["CALLBACK_URL"] = "http://localhost:8081/online%20trading/paytm/pgResponse.php";
+
 /*
-$paramList["CALLBACK_URL"] = "http://localhost/PaytmKit/pgResponse.php";
 $paramList["MSISDN"] = $MSISDN; //Mobile number of customer
 $paramList["EMAIL"] = $EMAIL; //Email ID of customer
 $paramList["VERIFIED_BY"] = "EMAIL"; //
@@ -35,6 +38,8 @@ $paramList["IS_USER_VERIFIED"] = "YES"; //
 
 //Here checksum string will return by getChecksumFromArray() function.
 $checkSum = getChecksumFromArray($paramList,PAYTM_MERCHANT_KEY);
+
+mysqli_query($con, "INSERT INTO deposit_order VALUES ('$ORDER_ID', '$CUST_ID', 0)");
 
 ?>
 <html>

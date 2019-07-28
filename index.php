@@ -63,7 +63,7 @@ include "config/config.php";
                     <thead>
                         <tr>
                             <th>Volume</th>
-                            <th>Price</th>
+                            <th>Rate</th>
                         </tr>
                     </thead>
                     <tbody id="buy-order-body">                       

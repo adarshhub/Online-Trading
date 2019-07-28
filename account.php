@@ -11,23 +11,23 @@ $email = $row['email'];
 ?>
 
 <div class="sub-container form-inline">
-    <div class="col-sm-8 mb-2 row-sm-10" style="height: 88vh;">
+    <div class="col-sm-7 mb-2 row-sm-10" style="height: 88vh;">
         <div id="profile-details-container" class="form-inline">
-            <div id="profile-inputs" class="col-sm-9">
+            <div id="profile-inputs" class="col-sm-7">
                 <div class="form-inline mb-2">
-                    <label for="profile-firstname" class="control-label col-sm-3">First Name:</label>
-                    <input required type="text" class="form-control col-sm-4" name="profile-firstname" id="profile-firstname" value="<?php echo $firstname; ?>" disabled>
+                    <label for="profile-firstname" class="control-label col-sm-4">First Name:</label>
+                    <input required type="text" class="form-control col-sm-6" name="profile-firstname" id="profile-firstname" value="<?php echo $firstname; ?>" disabled>
                 </div>
                 <div class="form-inline mb-2">
-                    <label for="profile-lastname" class="control-label col-sm-3">Last Name:</label>
-                    <input required type="text" class="form-control col-sm-4" name="profile-lastname" id="profile-lastname" value="<?php echo $lastname; ?>" disabled>
+                    <label for="profile-lastname" class="control-label col-sm-4">Last Name:</label>
+                    <input required type="text" class="form-control col-sm-6" name="profile-lastname" id="profile-lastname" value="<?php echo $lastname; ?>" disabled>
                 </div>
                 <div class="form-inline mb-2">
-                    <label for="profile-email" class="control-label col-sm-3">Email address:</label>
-                    <input required type="email" class="form-control col-sm-4" name="profile-email" id="profile-email" value="<?php echo $email; ?>" disabled>
+                    <label for="profile-email" class="control-label col-sm-4">Email address:</label>
+                    <input required type="email" class="form-control col-sm-6" name="profile-email" id="profile-email" value="<?php echo $email; ?>" disabled>
                 </div>
             </div>  
-            <div id="profile-btns" class="col-sm-1">
+            <div id="profile-btns" class="col-sm-4">
                 <button type="button" class="btn btn-warning mb-2" id="edit-profile-button" onclick="editProfile()">Edit Profile</button>
                 <button type="button" class="btn btn-danger mb-2" id="change-password-button" data-toggle="modal" data-target="#passwordChangeModal">Change Password</button>
             </div>
@@ -88,41 +88,103 @@ $email = $row['email'];
             </ul>
         </div>
     </div>
-    <div class="col-sm-3" style="height: 88vh;">
-        <div id="balance-container" >
-        <h2 class="display-4 mb-2">Balance</h2>
-        <div class="form-inline"><h2 class="col-sm-4">INR</h2><strong><span class="asset-name col-sm-3" id="inr-balance">0</span></strong></div>
-        <ul id="my-balance" class="list-group">  
-            <?php 
 
-            $mybalance_query = mysqli_query($con,"SELECT asset, amount FROM balance WHERE username='$username'");
-            
-            if(mysqli_num_rows($mybalance_query) > 0){
-                           
-                $asset_array = array();
-                $amount_array = array();
-    
-                while($row = mysqli_fetch_array($mybalance_query)){
-                    $asset = $row['asset'];
-                    $amount = $row['amount'];
-    
-                    array_push($asset_array,$asset);
-                    array_push($amount_array,$amount);
-                }
-    
-                $balance = new \stdClass();
-    
-                $balance->assets = $asset_array;
-                $balance->amounts = $amount_array;
-    
-                $obj = json_encode($balance);
-    
-    
-                echo "<script>init_balance($obj);</script>";
-            }
-    
-            ?>
-            </ul>
+    <div id="balance-container" class="col-sm-5" style="height: 88vh;">
+        <h2 class="display-4 mb-2">Balance</h2>
+        <div class="mb-2" style="vertical-align: middle;"><span class="h2 col-sm-4 pl-0">INR </span><span class="col-sm-8 ml-4" id="inr-balance" style="font-weight: 600;">0</span></div>
+        <div class="form-inline mb-2">
+            <button class="btn btn-success btn-sm mr-2" data-toggle="modal" data-target="#depositModal">Deposit</button>
+            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#withdrawModal">Withdraw</button>
         </div>
+        <ul id="my-balance" class="list-group">  
+        <?php 
+
+        $mybalance_query = mysqli_query($con,"SELECT asset, amount FROM balance WHERE username='$username'");
+
+        if(mysqli_num_rows($mybalance_query) > 0){
+                       
+            $asset_array = array();
+            $amount_array = array();
+
+            while($row = mysqli_fetch_array($mybalance_query)){
+                $asset = $row['asset'];
+                $amount = $row['amount'];
+
+                array_push($asset_array,$asset);
+                array_push($amount_array,$amount);
+            }
+
+            $balance = new \stdClass();
+
+            $balance->assets = $asset_array;
+            $balance->amounts = $amount_array;
+
+            $obj = json_encode($balance);
+
+
+            echo "<script>init_balance($obj);</script>";
+        }
+
+        ?>
+        </ul>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div class="modal" id="depositModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Deposit</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form method="POST" action="handlers/deposit_handler.php">
+                <div class="form-inline" >
+                    <label class="control-label col-sm-4">Amount: </label>
+                     <input required  name="deposit-amount" type="number" class="form-control " placeholder="1000">
+                </div>
+                <button type="submit" class="btn btn-success" style="float: right;">Confirm</button>
+            </form>
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div class="modal" id="withdrawModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Withdraw</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="form-inline">
+                <label class="control-label col-sm-4">Amount: </label>
+                <div class="col-sm-6">
+                    <input required  id="withdraw-amount" type="number" class="form-control" placeholder="1000">
+                   <small class="form-text text-muted">Max: 10000</small>
+                </div>
+            </div>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success" >Confirm</button>
+          </div>
+
+        </div>
+      </div>
     </div>
 </div>

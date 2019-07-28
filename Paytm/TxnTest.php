@@ -2,20 +2,20 @@
 	header("Pragma: no-cache");
 	header("Cache-Control: no-cache");
 	header("Expires: 0");
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Merchant Check Out Page</title>
+<title>Confirm Your Order</title>
 <meta name="GENERATOR" content="Evrsoft First Page">
+<link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css">
 </head>
 <body>
-	<h1>Merchant Check Out Page</h1>
+	<h1 class="display-4">Confirm Your Order</h1>
 	<pre>
 	</pre>
 	<form method="post" action="pgRedirect.php">
-		<table border="1">
+		<table class="table">
 			<tbody>
 				<tr>
 					<th>S.No</th>
@@ -30,17 +30,17 @@
 						value="<?php echo  "ORDS" . rand(10000,99999999)?>">
 					</td>
 				</tr>
-				<tr>
+				<tr >
 					<td>2</td>
 					<td><label>CUSTID ::*</label></td>
-					<td><input id="CUST_ID" tabindex="2" maxlength="12" size="12" name="CUST_ID" autocomplete="off" value="CUST001"></td>
+					<td><input id="CUST_ID" tabindex="2" maxlength="12" size="12" name="CUST_ID" autocomplete="off" value="<?php echo $_SESSION['username']; ?>"></td>
 				</tr>
-				<tr>
+				<tr hidden>
 					<td>3</td>
 					<td><label>INDUSTRY_TYPE_ID ::*</label></td>
-					<td><input id="INDUSTRY_TYPE_ID" tabindex="4" maxlength="12" size="12" name="INDUSTRY_TYPE_ID" autocomplete="off" value="Retail"></td>
+					<td><input id="INDUSTRY_TYPE_ID" tabindex="4" maxlength="12" size="12" name="INDUSTRY_TYPE_ID" autocomplete="off" value="Trade"></td>
 				</tr>
-				<tr>
+				<tr hidden>
 					<td>4</td>
 					<td><label>Channel ::*</label></td>
 					<td><input id="CHANNEL_ID" tabindex="4" maxlength="12"
@@ -52,13 +52,13 @@
 					<td><label>txnAmount*</label></td>
 					<td><input title="TXN_AMOUNT" tabindex="10"
 						type="text" name="TXN_AMOUNT"
-						value="1">
+						value="1" disabled>
 					</td>
 				</tr>
 				<tr>
 					<td></td>
 					<td></td>
-					<td><input value="CheckOut" type="submit"	onclick=""></td>
+					<td><input value="CheckOut" type="submit" onclick="" class="btn btn-primary"></td>
 				</tr>
 			</tbody>
 		</table>

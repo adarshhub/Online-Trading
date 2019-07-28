@@ -6,6 +6,7 @@ header("Expires: 0");
 // following files need to be included
 require_once("./lib/config_paytm.php");
 require_once("./lib/encdec_paytm.php");
+include("../config/config.php");
 
 $paytmChecksum = "";
 $paramList = array();
@@ -24,18 +25,39 @@ if($isValidChecksum == "TRUE") {
 		echo "<b>Transaction status is success</b>" . "<br/>";
 		//Process your transaction here as success transaction.
 		//Verify amount & order id received from Payment gateway with your application's order id and amount.
+
+		$ORDER_ID = $_POST['ORDERID'];
+		$TXNID  = $_POST['TXNID'];
+		$TXNAMOUNT  = $_POST['TXNAMOUNT'];
+		$PAYMENTMODE  = $_POST['PAYMENTMODE'];
+		$TXNDATE  = date("Y-m-d H:i:s", strtotime($_POST['TXNDATE']));
+
+		mysqli_query($con, "UPDATE deposit_order SET success = 1 WHERE order_id = '$ORDER_ID'");
+
+		mysqli_query($con, "INSERT INTO payment_history VALUES ('$ORDER_ID', '$TXNID', '$TXNAMOUNT', '$TXNDATE', '$PAYMENTMODE')");
+
+		$get_username = mysqli_query($con, "SELECT username FROM deposit_order WHERE order_id = '$ORDER_ID'");
+		$row = mysqli_fetch_array($get_username);
+		$username = $row[0]; 
+
+		mysqli_query($con, "UPDATE balance SET amount = amount + '$TXNAMOUNT' WHERE asset = 'inr' AND username = '$username'");
+
+		header("Location: http://localhost:8081/online%20trading/account.php");
 	}
 	else {
 		echo "<b>Transaction status is failure</b>" . "<br/>";
 	}
 
+	/*
+
 	if (isset($_POST) && count($_POST)>0 )
 	{ 
+
 		foreach($_POST as $paramName => $paramValue) {
 				echo "<br/>" . $paramName . " = " . $paramValue;
 		}
 	}
-	
+	*/
 
 }
 else {
