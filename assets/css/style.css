@@ -1,18 +1,8 @@
-nav a:hover:not(#logo){
-    background-color: #111;
-    text-decoration: none;
-}
+/*
 
-nav a{
-    float: right;
-    text-decoration: none;
-    display: inline-block;
-    height: 100%;
-    font-size: 1.1em;
-    color: white;
-    padding: 10px 20px;
 
-}
+
+
 nav a:hover{
     color: rgba(199, 198, 198, 0.972);
 }
@@ -34,6 +24,24 @@ nav {
     text-decoration: none;
 }
 
+*/
+nav a:hover:not(.navbar-brand){
+    text-decoration: none;
+    color: #111;
+}
+
+nav a{
+    text-decoration: none;
+    font-size: 1.1em;
+    color: white;
+    padding: 10px 20px;
+
+}
+
+#notification_menu{
+    left: -276px;
+    width: 340px;
+}
 .wrapper{
     margin-top: 18px;
     margin-left: 0;

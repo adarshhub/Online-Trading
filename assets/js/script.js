@@ -290,9 +290,21 @@ function init_balance(balance){
             container.insertAdjacentHTML('beforeend',htmlString);
         } else {
             document.getElementById('inr-balance').textContent = assets[asset];
-        }
-
-        
+        } 
 
     }
+}
+
+seen = false;
+
+function notificationSeen(){
+
+    if(seen == false){
+        $.post("handlers/ajax/notification_seen.php").done(function(){
+            seen = true;
+        });
+    }
+
+    $('.count').hide();
+
 }

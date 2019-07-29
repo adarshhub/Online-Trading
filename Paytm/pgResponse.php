@@ -42,6 +42,10 @@ if($isValidChecksum == "TRUE") {
 
 		mysqli_query($con, "UPDATE balance SET amount = amount + '$TXNAMOUNT' WHERE asset = 'inr' AND username = '$username'");
 
+		mysqli_query($con, "INSERT INTO notifications VALUES ('$TXNAMOUNT added to Wallet', '$username', '$TXNDATE')");
+
+		mysqli_query($con, "UPDATE notify_users SET seen_all = seen_all + 1 WHERE username = '$username'");
+
 		header("Location: http://localhost:8081/online%20trading/account.php");
 	}
 	else {
