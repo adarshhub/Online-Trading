@@ -169,19 +169,13 @@ $email = $row['email'];
 
           <!-- Modal body -->
           <div class="modal-body">
-            <div class="form-inline">
-                <label class="control-label col-sm-4">Amount: </label>
-                <div class="col-sm-6">
-                    <input required  id="withdraw-amount" type="number" class="form-control" placeholder="1000">
-                   <small class="form-text text-muted">Max: 10000</small>
+            <form method="POST" action="handlers/withdraw_handler.php">
+                <div class="form-inline" >
+                    <label class="control-label col-sm-4">Amount: </label>
+                     <input required  name="withdraw-amount" type="number" class="form-control " placeholder="100">
                 </div>
-            </div>
-          </div>
-
-          <!-- Modal footer -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-success" >Confirm</button>
+                <button type="submit" class="btn btn-success" style="float: right;">Confirm</button>
+            </form>
           </div>
 
         </div>
