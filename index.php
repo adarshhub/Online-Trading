@@ -28,8 +28,8 @@ include "config/config.php";
             <thead>
                 <tr>
                     <th scope="col">Name</th>
-                    <th scope="col">Market Price</th>
-                    <th scope="col">Last Traded Price</th>
+                    <th scope="col">Market Price (INR)</th>
+                    <th scope="col">1 Hr Change</th>
                 </tr>
             </thead>
             <tbody id="asset-list">

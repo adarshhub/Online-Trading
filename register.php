@@ -13,6 +13,7 @@ include 'handlers/register_handler.php';
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
     <link rel="stylesheet" type="text/css"  href="assets/css/register.css" />
 
+
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="assets/js/bootstrap.js"></script>
@@ -33,7 +34,7 @@ include 'handlers/register_handler.php';
     ?>
     <div class="wrapper">
         <div class="login-header">
-            <h2>On-Trade</h2>
+            <h2>P2P-Trade</h2>
             Trade Online from Anywhere
         </div>
         <div id="login-box">
@@ -45,6 +46,7 @@ include 'handlers/register_handler.php';
                 <button type="submit" name="login_button">Login</button>
                 <br>
                 <a href="#" id="gotoSignup">New Here. SignUp For FREE!</a>
+                <a href="security_check.php" id="forgotPassword">Forgot Password</a>
             </form>
         </div>
         <div id="register-box">
@@ -65,6 +67,10 @@ include 'handlers/register_handler.php';
                 <br>
                 <input type="password" name="register_password_2" required placeholder="Confirm Password">
                 <br>
+                <select id="security_question" style="margin-bottom: 5px"></select>
+                <br>
+                <input type="text" name="security_answer" required placeholder="Security Answer">
+                <br>
                 <button type="Submit" name="register_button">Register</button>
                 <br>
                 <a href="#" id="gotoLogin">Already a Member? Login.</a>
@@ -72,4 +78,21 @@ include 'handlers/register_handler.php';
         </div>
     </div>
 </body>
+<script type="text/javascript">
+    
+    $.ajax({
+        url: "handlers/ajax/get_security_questions.php",
+        method: "GET",
+        dataType: 'json',
+        success: function(data){
+            var html;
+            var questions_dropdown = document.getElementById('security_question');
+            for (var i = 0; i < data.length; i++) {
+                html = '<option value="'+i+'">'+data[i]+'</option>';
+
+                questions_dropdown.insertAdjacentHTML('beforeend', html);
+            }
+        }
+    })
+</script>
 </html>

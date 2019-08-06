@@ -115,6 +115,10 @@ table {
    cursor: pointer;
 }
 
+.hr_change_img {
+    width: 25px;
+}
+
 .table thead th {
     vertical-align: middle;
 }
@@ -271,9 +275,10 @@ table {
 }
 
 .loader {
+    position: relative;
     left: 50%;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 48%;
+    transform: translateX(-50%);
     border: 8px solid #f3f3f3;
     border-radius: 50%;
     border-top: 8px solid rgba(62, 50, 185, 0.74);

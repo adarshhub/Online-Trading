@@ -18,7 +18,34 @@ function openPage(url){
     history.pushState(null, null, encodedUrl);
 }
 
+Number.prototype.format = function(n, x) {
+    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+    return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
+};
+
 function init_market(){
+
+    $.ajax({
+        url: './handlers/ajax/asset_api.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data){
+            var img;
+
+            var assetListContainer = document.getElementById('asset-list');
+            var total_assets = data['symbol'].length;
+            document.querySelector('.loader').classList.toggle('hide');
+            for(var i=0; i<total_assets; i++){
+                img = (data['change'][i] > 0 ? 'up.png' : 'down.png');
+                var htmlString = '<tr class="asset-list asset table-primary"><td>'+data['symbol'][i]+'</td><td>'+data['price'][i].format(2, 3)+'</td><td><img class="hr_change_img" src="assets/img/'+ img +'"></td></tr>';
+            assetListContainer.insertAdjacentHTML('beforeend', htmlString);
+            }
+            assetListener();
+            console.log(data);
+        }
+    })
+
+    /*
     var request = new XMLHttpRequest();
     request.open('GET','https://koinex.in/api/ticker');
 
@@ -50,6 +77,8 @@ function init_market(){
     request.send(); 
 
     request.addEventListener('loadend',assetListener);
+
+    */
 
 }
 
