@@ -67,7 +67,7 @@ include 'handlers/register_handler.php';
                 <br>
                 <input type="password" name="register_password_2" required placeholder="Confirm Password">
                 <br>
-                <select id="security_question" style="margin-bottom: 5px"></select>
+                <select id="security_question" name="security_question" style="margin-bottom: 5px"></select>
                 <br>
                 <input type="text" name="security_answer" required placeholder="Security Answer">
                 <br>
@@ -88,7 +88,7 @@ include 'handlers/register_handler.php';
             var html;
             var questions_dropdown = document.getElementById('security_question');
             for (var i = 0; i < data.length; i++) {
-                html = '<option value="'+i+'">'+data[i]+'</option>';
+                html = '<option value="'+(i+1)+'">'+data[i]+'</option>';
 
                 questions_dropdown.insertAdjacentHTML('beforeend', html);
             }

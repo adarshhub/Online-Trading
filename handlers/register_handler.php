@@ -31,6 +31,10 @@ if(isset($_POST['register_button'])){
     $password1 = strip_tags($_POST['register_password_1']);
 	$password2 = strip_tags($_POST['register_password_2']);
 
+    $security_answer = strip_tags($_POST['security_answer']);
+    $security_question = $_POST['security_question'];
+
+
     $date = date('Y-m-d');
 
     if(filter_var($email, FILTER_VALIDATE_EMAIL)){
@@ -56,6 +60,8 @@ if(isset($_POST['register_button'])){
                 }
 
                 $registering = mysqli_query($con,"INSERT INTO users (username, firstname, lastname, email, password, dateOfJoining) VALUES ('$uname', '$fname', '$lname', '$email', '$password1', '$date')");
+
+                mysqli_query($con, "INSERT INTO security_answers VALUES ('$uname', '$security_question', '$security_answer')");
                 
                 if($registering){
                     

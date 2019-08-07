@@ -262,7 +262,8 @@ function get_balance($username, $asset){
 function update_balance($username, $asset, $amount){
     global $con;
 
-    $balance_update = mysqli_query($con,"UPDATE balance SET amount='$amount' WHERE asset='$asset' AND username='$username'");
+    $balance_update = mysqli_query($con,"INSERT INTO balance VALUES ('$asset', '$amount', '$username') ON DUPLICATE KEY UPDATE  amount= '$amount'");
+
     return $balance_update;
 }
 
