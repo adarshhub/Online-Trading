@@ -77,6 +77,17 @@ function check_match($asset){
                 $updated_inr = $current_inr + $inr_required;
                 update_balance($second_username, 'inr', $updated_inr);
 
+
+                //Notifications
+
+                $TXNDATE  = date("Y-m-d H:i:s");
+
+                mysqli_query($con, "INSERT INTO notifications VALUES ('Trade of $asset amount to $inr_required is successfull', '$first_username', '$TXNDATE')");
+
+                mysqli_query($con, "INSERT INTO notifications VALUES ('Trade of $asset amount to $inr_required is successfull', '$second_username', '$TXNDATE')");
+
+                mysqli_query($con, "UPDATE notify_users SET seen_all = seen_all + 1 WHERE username IN ('$first_username', '$second_username')");
+
                 check_match($asset);
             }
             

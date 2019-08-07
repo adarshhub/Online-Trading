@@ -25,6 +25,8 @@ Number.prototype.format = function(n, x) {
 
 function init_market(){
 
+    var assets = {};
+
     $.ajax({
         url: './handlers/ajax/asset_api.php',
         method: 'GET',
@@ -37,13 +39,14 @@ function init_market(){
             document.querySelector('.loader').classList.toggle('hide');
             for(var i=0; i<total_assets; i++){
                 img = (data['change'][i] > 0 ? 'up.png' : 'down.png');
+                assets[data['symbol'][i]]  = 0;
                 var htmlString = '<tr class="asset-list asset table-primary"><td>'+data['symbol'][i]+'</td><td>'+data['price'][i].format(2, 3)+'</td><td><img class="hr_change_img" src="assets/img/'+ img +'"></td></tr>';
-            assetListContainer.insertAdjacentHTML('beforeend', htmlString);
+                assetListContainer.insertAdjacentHTML('beforeend', htmlString);
             }
             assetListener();
-            console.log(data);
+            sessionStorage.setItem('assets',JSON.stringify(assets));
         }
-    })
+    });
 
     /*
     var request = new XMLHttpRequest();
@@ -96,7 +99,7 @@ function assetListener(){
             } else if(ele.target.classList[0] == 'asset-list'){
                 asset = ele.srcElement.childNodes[0].textContent;
             }
-            asset=asset.toLowerCase();
+
             loadAsset(asset);
         });
 
@@ -130,7 +133,7 @@ function loadAsset(asset){
 }
 
 function initAsset(asset){
-    currentAsset = asset.toLowerCase();
+    currentAsset = asset;
     document.getElementById('asset-name').innerHTML = asset.toUpperCase();
 }
 
@@ -208,6 +211,7 @@ function place_order(type){
     var volume = document.getElementById(type+'-volume').value;
     var rate = document.getElementById(type+'-rate').value;
 
+/*
     var request = new XMLHttpRequest();
     
     request.open('GET','https://koinex.in/api/ticker' );
@@ -235,6 +239,27 @@ function place_order(type){
     }
 
     request.send(); 
+
+                    */
+
+    $.post("handlers/ajax/valid_order.php",{asset: currentAsset.toUpperCase(), rate: rate}).done(function(data){
+
+        var temp_notice_box = document.getElementById('notice-box');
+        if(data == 'false'){
+            temp_notice_box.innerHTML = "<div class='alert alert-warning alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>OOPs!</strong> Rate cannot be greater or less than 10%</div>";
+        } else {
+
+             $.post("handlers/ajax/place_order.php",{type: type,asset: currentAsset, volume: volume, rate: rate}).done(function(error){
+                if(error){
+                    temp_notice_box.innerHTML = error;
+                } else {
+                    temp_notice_box.innerHTML = "<div class='alert alert-success alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>Success!</strong> Order Placed</div>";
+
+                    loadAsset(currentAsset);
+                }
+            });
+        }
+    });
     
 }
 
@@ -304,7 +329,7 @@ function init_balance(balance){
     var assets = JSON.parse( sessionStorage.assets);
     
     for(i = 0; i < size; i++){
-        assets[balance.assets[i]] = balance.amounts[i];
+        assets[balance.assets[i].toUpperCase()] = balance.amounts[i];
     }
 
     sessionStorage.assets = JSON.stringify(assets);
@@ -312,7 +337,7 @@ function init_balance(balance){
     for(asset in assets){
         htmlString = '<li class="alert alert-success order-list-item"><span class="asset-name col-sm-4"><strong>%asset%</strong></span><span class="asset-name col-sm-3"><strong>%amount%</strong></span></li>';
 
-        if(asset != 'inr'){
+        if(asset != 'INR'){
             htmlString = htmlString.replace('%asset%',asset);
             htmlString= htmlString.replace('%amount%',assets[asset]);
 
