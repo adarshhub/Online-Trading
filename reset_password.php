@@ -10,6 +10,7 @@ if(!isset($_SESSION['edit'])){
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
 	<title>Reset Password</title>
 	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -31,7 +32,7 @@ if(!isset($_SESSION['edit'])){
 </head>
 <body>
 	<div class="wrapper">
-		<h1 class="display-2">Reset Password</h1>
+		<h1 class="display-4">Reset Password</h1>
     <div class="form-inline form-group mb-2" id="new_password_form">
         <label class="col-sm-5">New Password:</label>
         <input id="new_password" class=" form-control col-sm-6" />

@@ -4,13 +4,13 @@ body{
 }
 
 .wrapper{
-    max-width: 455px;
+    width: 455px;
     background-color: #5621;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
     padding: 5px 20px;
-}
+} 
 
 input[type="text"], input[type="password"], input[type="email"]{
     width: 80%;
@@ -28,7 +28,7 @@ input[type="text"]:hover, input[type="password"]:hover, input[type="email"]:hove
 form button{
     border: none;
     padding: 5px 10px;;
-    background-color: #3B5998;
+    background-color: #007bff;
     color: #fff;
     font-size: 1.3em;
     margin: 10px 0;
@@ -50,7 +50,7 @@ form a:hover{
     color: rgba(223, 94, 20, 0.938);
 }
 .login-header{
-    background-color: #3B5998;
+    background-color: #007bff;
     margin: 7px;
     border: none;
     border-radius: 5px;
@@ -60,7 +60,7 @@ form a:hover{
 }
 
 .login-header h2{
-    color: #6d84b4;
+    color: #fff;
 	font-size: 250%;
 	font-family: 'Bellota-BoldItalic', san-serif;
 	margin-top:0;

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
 	<title>Security Check</title>
 	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -9,9 +10,12 @@
 		.wrapperL{
 			margin-left: auto;
 			margin-right: auto;
-			max-width: 600px;
+            padding-left: 8px;
+            padding-right: 8px;
+			width: 600px;
 		}
 
+    
 		#msg_box{
 		    width: 400px;
 		    bottom: 0;
@@ -23,7 +27,7 @@
 </head>
 <body >
 	<div class="wrapperL">
-<h1 class="display-2">Forgot Password</h1>
+<h1 class="display-4">Forgot Password</h1>
     <div class="form-group">
         <label>Email:</label>
         <input class="form-control" id="forgot_email" />

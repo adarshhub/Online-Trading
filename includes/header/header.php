@@ -44,6 +44,7 @@ if(mysqli_num_rows($query)){
 
 <!DOCTYPE html>
 <head>
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
     <title>Online Trading</title>   
 
 	<!-- CSS -->
@@ -84,5 +85,5 @@ if(mysqli_num_rows($query)){
         </div>
     </nav>
     
-    <div id="main-container" class="wrapper">
+    <div id="main-container" class="wrapper row">
 

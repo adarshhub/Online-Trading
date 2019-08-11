@@ -1,30 +1,5 @@
-/*
 
 
-
-
-nav a:hover{
-    color: rgba(199, 198, 198, 0.972);
-}
-
-nav {
-    top: 0;
-    background-color: #333;
-    height: 50px;
-    overflow: hidden;
-}
-
-#logo{
-    color: #fff;
-    font-size: 1.3em;
-    float: left;
-}
-
-#logo:hover{
-    text-decoration: none;
-}
-
-*/
 nav a:hover:not(.navbar-brand){
     text-decoration: none;
     color: #111;
@@ -32,7 +7,6 @@ nav a:hover:not(.navbar-brand){
 
 nav a{
     text-decoration: none;
-    font-size: 1.1em;
     color: white;
     padding: 10px 20px;
 
@@ -42,30 +16,26 @@ nav a{
     left: -276px;
     width: 340px;
 }
+
 .wrapper{
-    margin-top: 18px;
-    margin-left: 0;
-    margin-right: 0;
-}
+        margin-top: 18px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
 
 #main-container > div {
     float: none;
 }
 
-@media(min-width: 800px){
+body{
+    font-size: 1.5rem;
+}
 
-    #asset-list-container{
-        width: 56%;
-        height: 100%;
-    }
 
-    #main-container > div {
-        float: left;
-    }
+@media(min-width: 640px){
 
-    table {
-        font-size: 1em;
-    }
 
     .wrapper{
         max-width: 1300px;
@@ -74,15 +44,17 @@ nav a{
         margin-right: auto;
     }
 
-    #asset-details-container {
-        max-width: 40%;
-        height: 500px;
-    }
 
     #order-container{
         padding: 0 18px;
         width: 100%;
     }
+
+    .hr_change_img {
+        width: 35px;
+    }
+
+
 }
 
 #order-container{
@@ -99,13 +71,8 @@ nav a{
     height: auto;
 }
 
-table {
-        font-size: 0.9rem;
-    }
-
 #asset-list-container{
     padding: 10px;
-    max-height: 85vh;
     border-right: 1px solid #333;
     overflow-y: scroll;
     float: left;
@@ -171,11 +138,22 @@ table {
 
 .asset-name{
     float: left;
+    min-height: 38px;
+
+    }
+
+/*
+
+
+.asset-name{
+    float: left;
     width: 30%;
     text-align: left;
     padding-left: 18px;
     height: min-content;
 }
+
+*/
 
 .asset-last-trade-price{
     float: right;
@@ -191,17 +169,20 @@ table {
     padding-right: 9px;
 }
 
-#trade-container > div, #order-container > div {
+#trade-container > div {
     float: left;
-    padding: 9px;
+    padding: 10px;
 }
 
 #trade-container {
-    top: 50%;
     display: flex;
     width: 100%;
-    padding: 0px 18px;
     border-bottom: 1px solid #333;
+}
+
+#order-container > div{
+    float: left;
+    padding: 0px;
 }
 
 #buy-box > input, #sell-box input{
@@ -215,6 +196,7 @@ table {
 #sell-box, #sell-orders-box{
     border-right: 1px solid #333;
 }
+
 /*
 
 #sell-orders-box, #buy-orders-box{
@@ -247,17 +229,16 @@ table {
 
 #notice-box{
     z-index: 10;
-    position: fixed;
     bottom: 0px;
-    left: 40%;
-}
+    left: 50%;
+    transform: translateX(-50%);
 
-.order-list-item{
-    display: inline-flex;
 }
 
 .sub-container{
-    width: 100%
+    width: 100%;
+    margin-left: 8px;
+    margin-right: 8px;
 }
 
 .hide{
@@ -267,6 +248,20 @@ table {
 #my-balance{
     overflow-y: scroll;
     height: 72%;
+}
+
+#profile-inputs  label {
+    padding-left: 0;
+    float: : left;
+}
+
+.edit-profile{
+    padding: 0;
+}
+
+#balance-container{
+    padding-left: : 4px;
+    padding-right: 4px; 
 }
 
 #my-orders{

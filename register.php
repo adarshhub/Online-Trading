@@ -8,6 +8,7 @@ include 'handlers/register_handler.php';
 
 <!DOCTYPE html>
 <head>
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
     <title>Register Youself!</title>
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">

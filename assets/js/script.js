@@ -13,8 +13,10 @@ function openPage(url){
 
     var encodedUrl = encodeURI(url);
     encodedUrl = encodedUrl.substring(encodedUrl.lastIndexOf('/')+1, encodedUrl.length);
+    
     $("#main-container").load(encodedUrl);
-    $("body").scrollTop(0);
+    $("body").scrollTop(0); 
+
     history.pushState(null, null, encodedUrl);
 }
 
@@ -120,6 +122,31 @@ function loadAsset(asset){
     init_orders("buy",empty_obj);
     init_orders("sell",empty_obj);
 
+
+    $.ajax({
+        url: 'handlers/ajax/asset_details.php',
+        method: 'POST',
+        dataType: 'json',
+        data: {type: 'buy', asset: asset},
+        success: function(obj){
+            init_orders("buy",obj);
+        }
+    });
+
+    
+
+    $.ajax({
+        url: 'handlers/ajax/asset_details.php',
+        method: 'POST',
+        dataType: 'json',
+        data: {type: 'sell', asset: asset},
+        success: function(obj){
+            init_orders("sell",obj);
+        }
+    });
+
+    /*
+
     $.post("handlers/ajax/asset_details.php",{type: "buy", asset: asset}).done(function(obj){
        var json_obj = JSON.parse(obj.toString());
        
@@ -130,6 +157,8 @@ function loadAsset(asset){
        var json_obj = JSON.parse(obj.toString());
         init_orders("sell",json_obj);
     });
+
+    */
 }
 
 function initAsset(asset){
@@ -335,7 +364,7 @@ function init_balance(balance){
     sessionStorage.assets = JSON.stringify(assets);
 
     for(asset in assets){
-        htmlString = '<li class="alert alert-success order-list-item"><span class="asset-name col-sm-4"><strong>%asset%</strong></span><span class="asset-name col-sm-3"><strong>%amount%</strong></span></li>';
+        htmlString = '<li class="table-success order-list-item"><span class="asset-name col-sm-4"><strong>%asset%</strong></span><span class="asset-name col-sm-3"><strong>%amount%</strong></span></li>';
 
         if(asset != 'INR'){
             htmlString = htmlString.replace('%asset%',asset);
